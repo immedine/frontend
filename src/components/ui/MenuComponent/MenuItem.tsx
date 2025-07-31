@@ -35,8 +35,6 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
 
   const onEdit = async (data, images, setOpenMenuItem) => {
 
-    console.log("setOpenMenuItem ", setOpenMenuItem)
-
     const imageUrls = [];
     const fileImages = images.filter(item => item instanceof File);
     if (fileImages && fileImages.length) {
