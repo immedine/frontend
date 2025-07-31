@@ -1,0 +1,29 @@
+image: node:18.19.0
+definitions:
+  caches:
+    npm: ~/.npm
+pipelines:
+  branches:
+    'admin/development':
+      - step:
+          name: Admin Development - creating build and deploy to aws
+          deployment: DEV_ADMIN
+          caches:
+            - npm
+          script:
+            - cp .env.staging .env
+            - rm -rf .env.staging
+            - rm -rf .env.development
+            - npm install --legacy-peer-deps
+            - npm run build
+            - rm -rf node_modules
+            - rm -rf src
+            - rm -rf .gitignore
+            - rm -rf bitbucket-pipelines.yml
+            - rm -rf README.md
+            - git status
+            - git fetch --unshallow || git fetch
+            - git add --all
+            - git commit -m "new build"
+            - git push $REMOTE_DEV_ADMIN HEAD:admin/development --force --no-thin
+            - echo "Pushed PHS ADMIN to aws in DEV Environment"
