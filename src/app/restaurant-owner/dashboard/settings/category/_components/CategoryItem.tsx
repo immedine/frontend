@@ -16,9 +16,10 @@ const CategoryItem = ({ items, onEdit, onDelete, chooseCategory, openItem, menuL
       return {
         id: each._id,
         header: each.name,
-        subText: each.order,
+        subText: each.totalMenu,
         content: "Menu",
-        menuList: menuList
+        menuList: menuList,
+        type: "Category"
       }
     })} />
 }

@@ -18,7 +18,7 @@ export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openI
           <Accordion.Header className="flex">
             <Accordion.Trigger className="flex justify-between items-center w-full p-4 text-left font-medium">
               <span>{item.header}
-                {item.subText ? <span className='text-xs ml-2'>(Order: {item.subText})</span> : null}
+                {item.type === "Category" ? <span className='text-xs ml-2'>({item.subText})</span> : null}
                   <>
                     <button className="ml-2 align-middle" onClick={(e) => { e.stopPropagation(); onEdit(item.id) }}>
                       <Pencil size={16} />

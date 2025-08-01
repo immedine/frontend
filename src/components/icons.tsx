@@ -39,7 +39,9 @@ import {
   UserPen,
   UserX2Icon,
   Wrench,
-  X
+  X,
+  Hotel,
+  QrCode
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -71,9 +73,6 @@ export const Icons = {
   moon: Moon,
   laptop: Laptop,
   content: NewspaperIcon,
-  city: Building2,
-  story: NewspaperIcon,
-  route: MapPin,
   ads: Image,
   role: ShieldCheck,
   admin: UserCog,
@@ -84,6 +83,8 @@ export const Icons = {
   userView: UserCircle2Icon,
   userEdit: UserPen,
   lock: Lock,
+  restaurant: Hotel,
+  qr: QrCode,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

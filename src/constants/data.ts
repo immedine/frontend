@@ -128,8 +128,7 @@ export const navItems: NavItem[] = [
     url: '/dashboard/overview',
     key: 'dashboard',
     icon: 'dashboard',
-    isActive: false,
-    shortcut: ['d', 'd'],
+    isActive: true,
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
@@ -137,7 +136,18 @@ export const navItems: NavItem[] = [
     url: '/dashboard/settings/category',
     key: 'category',
     icon: 'category',
-    shortcut: ['s', 'c']
+  },
+  {
+    title: 'Restaurant Details',
+    url: '/dashboard/settings/restaurant-details',
+    key: 'restaurant',
+    icon: 'restaurant',
+  },
+  {
+    title: 'Generate QR',
+    url: '/dashboard/settings/generate-qr',
+    key: 'qr',
+    icon: 'qr',
   },
   // {
   //   title: 'Settings',
