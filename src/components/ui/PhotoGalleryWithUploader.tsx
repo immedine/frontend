@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 export default function ImageGalleryUploader({images, setImages, parentFiles, setFiles}) {
   const fileInputRef = useRef(null);
@@ -6,7 +6,7 @@ export default function ImageGalleryUploader({images, setImages, parentFiles, se
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...newImages]);
+    setImages(prev => [ ...newImages, ...prev]);
 
     let localParentFiles = parentFiles;
     for (const item in e.target.files) {
@@ -46,7 +46,7 @@ export default function ImageGalleryUploader({images, setImages, parentFiles, se
           {images.map((src, index) => (
             <img
               key={index}
-              src={"https://i.pinimg.com/736x/b7/f4/2b/b7f42bb18ed185707e265075164904f5.jpg"}
+              src={src}
               alt={`img-${index}`}
               className="w-[70px] h-[70px] object-cover rounded shadow"
             />

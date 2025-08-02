@@ -33,8 +33,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
     }
   }, [items]);
 
-  const onEdit = async (data, images, setOpenMenuItem) => {
-
+  const onEdit = async (data, images) => {
     const imageUrls = [];
     const fileImages = images.filter(item => item instanceof File);
     if (fileImages && fileImages.length) {
@@ -45,6 +44,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
       }
       
     }
+    
 
     if (data.id !== "-1") {
       const res = await menuService.updateMenu(data.id, {
@@ -58,18 +58,22 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
         isNonVeg: !data.isVeg,
         description: data.description,
         images: data.images ? [...data.images, ...imageUrls] : [...imageUrls],
-        ingredients: data.ingredients ?
+        ingredients: data.ingredients && data.ingredients.length ?
           data.ingredients.includes('\n') ? data.ingredients.split('\n') : [data.ingredients] : []
       }, pathname.split('/')[1]);
 
       if (res) {
-        setLocalItems(localItems.map(each => {
-          if (each._id === data.id) {
-            each = JSON.parse(JSON.stringify(data));
-          }
+        // setLocalItems(localItems.map(each => {
+        //   if (each._id === data.id) {
+        //     each = JSON.parse(JSON.stringify({
+        //       ...data,
+        //       images: [...data.images, ...imageUrls],
+        //     }));
+        //   }
 
-          return each;
-        }));
+        //   return each;
+        // }));
+        fetchMenu();
       }
     } else {
       const res = await menuService.addMenu({
@@ -83,7 +87,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
         images: [...imageUrls],
         isNonVeg: !data.isVeg,
         description: data.description,
-        ingredients: data.ingredients ?
+        ingredients: data.ingredients && data.ingredients.length ?
           data.ingredients.includes('\n') ? data.ingredients.split('\n') : [data.ingredients] : []
       }, pathname.split('/')[1]);
       if (res) {
