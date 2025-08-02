@@ -107,7 +107,7 @@ const handleErrorResponse = (errorData: ApiResponse) => {
   if (errorCode === 1000) {
     console.log('Unauthorized access detected - redirecting to sign-in');
     Cookies.remove(AUTH_TOKEN);
-    handleClientRedirect('/auth/sign-in');
+    handleClientRedirect('/restaurant-owner/auth/sign-in');
     return;
   }
 

@@ -12,7 +12,7 @@ export default function AuthGuard({
   const storeVal = cookieStore.get(AUTH_TOKEN)?.value;
 
   if (!storeVal) {
-    return redirect('/auth/sign-in');
+    return redirect('/restaurant-owner/auth/sign-in');
   } else {
     return children;
   }

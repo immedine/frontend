@@ -62,7 +62,7 @@ export function useResetPassword() {
     mutationFn: authService.resetPassword,
     onSuccess: () => {
       toast.success('Password reset successful');
-      router.push('/auth/sign-in');
+      router.push('/restaurant-owner/auth/sign-in');
     },
     // onError: (error: any) => {
     //   toast.error(error?.message || 'Password reset failed');

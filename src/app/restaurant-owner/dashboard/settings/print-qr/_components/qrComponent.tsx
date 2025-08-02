@@ -24,7 +24,7 @@ export default function QRCodeForm() {
 
   return (
     !preview ? <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Generate QR Code</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">Print QR Code</h2>
 
       <div className="space-y-4">
         <div>
@@ -58,7 +58,7 @@ export default function QRCodeForm() {
         <div className="flex justify-end">
           <button
             onClick={() => setPreview(true)}
-            className="w-24 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            className="w-24 bg-primary text-white py-2 rounded-md transition"
           >
             Preview
           </button>
@@ -69,6 +69,7 @@ export default function QRCodeForm() {
       header={header}
       description={description}
       qrImage={qrImage}
+      setPreview={setPreview}
     />
   );
 }

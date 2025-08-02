@@ -1,16 +1,21 @@
 "use client";
 
+import { restaurantService } from '@/services/restaurant.service';
+import { usePathname } from 'next/navigation';
 // components/RestaurantForm.jsx
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function RestaurantForm() {
+  const pathname = usePathname();
+
   const [formData, setFormData] = useState({
     name: '',
     logo: null,
     intro: '',
-    primaryColor: '#000000',
-    secondaryColor: '#ffffff',
+    primaryColor: '',
+    secondaryColor: '',
   });
 
   const handleChange = (e) => {
@@ -21,11 +26,41 @@ export default function RestaurantForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle upload logic here
     console.log(formData);
+    const reqBody = {
+      name: formData.name,
+      introductoryText: formData.intro,
+      primaryColor: formData.primaryColor || "",
+      secondaryColor: formData.secondaryColor || ""
+    }
+    if (formData.logo) {
+      reqBody.logo = formData.logo;
+    }
+    const res = await restaurantService.updateRestaurant(reqBody, pathname.split('/')[1]);
+    if (res) {
+      toast.success('Restaurant details updated successfully!');
+    }
   };
+
+  const fetchRestaurantDetails = async () => {
+    const res = await restaurantService.getRestaurant(pathname.split('/')[1])
+    if (res.data) {
+      setFormData({
+        name: res.data.name,
+        logo: res.data.logo,
+        intro: res.data.introductoryText,
+        primaryColor: res.data.primaryColor,
+        secondaryColor: res.data.secondaryColor,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchRestaurantDetails();
+  }, []);
 
   return (
     <form
@@ -89,13 +124,14 @@ export default function RestaurantForm() {
           />
         </div>
       </div>
-
+      <div className='flex justify-end'>
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-primary text-white px-4 py-2 rounded"
       >
         Submit
       </button>
+      </div>
     </form>
   );
 }

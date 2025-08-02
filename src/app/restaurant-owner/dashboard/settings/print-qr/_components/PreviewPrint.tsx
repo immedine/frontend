@@ -3,7 +3,7 @@
 import React from "react";
 import printJS from "print-js";
 
-const PrintView = ({header, description, qrImage}) => {
+const PrintView = ({header, description, qrImage, setPreview}) => {
   const handlePrint = () => {
     printJS({
       printable: "qr-print-section",
@@ -15,8 +15,14 @@ const PrintView = ({header, description, qrImage}) => {
   return (
     <div className="p-6">
       <button
+        onClick={() => setPreview(false)}
+        className="mb-4 mr-4 px-4 py-2 bg-gray-200 text-gray-800 rounded"
+      >
+        Back
+      </button>
+      <button
         onClick={handlePrint}
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="mb-4 px-4 py-2 bg-primary text-white rounded"
       >
         Print QR Code
       </button>
@@ -24,7 +30,7 @@ const PrintView = ({header, description, qrImage}) => {
       {/* Section to print */}
       <div
         id="qr-print-section"
-        className="text-center p-6 flex border border-gray-200 shadow-md justify-center"
+        className="text-center p-6 flex border border-gray-200 shadow-md justify-center print:w-screen print:h-screen"
       >
         <div className="bg-white p-6">
             <h1 className="text-3xl font-bold mb-2">{header}</h1>

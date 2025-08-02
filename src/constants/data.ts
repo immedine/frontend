@@ -144,8 +144,8 @@ export const navItems: NavItem[] = [
     icon: 'restaurant',
   },
   {
-    title: 'Generate QR',
-    url: '/dashboard/settings/generate-qr',
+    title: 'Print QR',
+    url: '/dashboard/settings/print-qr',
     key: 'qr',
     icon: 'qr',
   },
