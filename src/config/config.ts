@@ -16,3 +16,5 @@ export const LangCodes = {
   'Portuguese': 'pt',
   'Italian': 'it'
 }
+
+export const defaultImage = "https://www.bookmychefs.com/uploads/dish/default_food.jpg";

@@ -31,6 +31,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'roodsappbucket.s3.eu-central-1.amazonaws.com',
         port: ''
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.bookmychefs.com',
+        port: ''
       }
     ]
   },
