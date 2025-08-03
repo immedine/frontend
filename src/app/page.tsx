@@ -8,9 +8,11 @@ export default function Home() {
   const cookieStore = cookies();
   const storeVal = cookieStore.get(AUTH_TOKEN)?.value;
 
-  if (storeVal) {
-    return redirect('/restaurant-owner/dashboard/overview');
-  } else {
-    return redirect('/restaurant-owner/auth/sign-in');
-  }
+  redirect('/index.html')
+  // if (storeVal) {
+  //   return redirect('/restaurant-owner/dashboard/overview');
+  // } else {
+  //   return redirect('/restaurant-owner/auth/sign-in');
+  // }
+  
 }
