@@ -12,7 +12,7 @@ import {categoryService} from '@/services/category.service';
 import { menuService } from "@/services/menu.service";
 import SearchModal from "@/components/ui/SearchModal";
 
-export default function MenuList() {
+export default function MenuList({restaurantId}) {
   const router = useRouter();
   const cartProducts = {};
 //   const cartProducts = useCartProductsStore((state) => state.cartProducts);
@@ -29,10 +29,11 @@ export default function MenuList() {
   const [showSearch, setShowSearch] = useState(false);
 
   const userData = useUserStore((state) => state.user);
-// const userData = {};
 
   const fetchCategories = async () => {
-    const res = await categoryService.getCategoriesFromApp();
+    const res = await categoryService.getCategoriesFromApp({
+      filters: { restaurantRef:restaurantId }
+    });
     if (res.data) {
       setCategoryData(res.data.data);
       setBackupCategoryData(res.data.data);
@@ -41,7 +42,9 @@ export default function MenuList() {
   }
 
   const fetchMenus = async () => {
-    const res = await menuService.getMenusFromApp();
+    const res = await menuService.getMenusFromApp({
+      filters: { restaurantRef:restaurantId }
+    });
 
     if (res.data) {
       setBackupMenuData(res.data);
@@ -54,8 +57,8 @@ export default function MenuList() {
   }, [cartProducts]);
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    restaurantId && fetchCategories();
+  }, [restaurantId]);
 
   const [filters, setFilters] = useState([{
     label: 'Veg',
@@ -183,7 +186,7 @@ export default function MenuList() {
     <div className="h-screen relative">
       {showSearch ?
       <SearchModal open={showSearch} onClose={() => setShowSearch(false)} /> : null}
-      <div className={`flex justify-between px-4 pb-4 bg-${!userData?.dark ? "primary" : "primary"}`}>
+      <div className={`flex justify-between px-4 pb-4 bg-[#f5b042]`}>
         <button
           className={`py-2 px-4 border rounded-full transition-colors flex items-center relative 
             ${!userData?.dark ? "bg-[#2f2e33]" : "bg-white"}
@@ -335,16 +338,17 @@ export default function MenuList() {
                         key={index}
                         product={{...product,image: product?.images?.length ? product.images[0] : ""}}
                         hideAddToCart={false}
+                        onClick={() => router.push(`/diner/details/${product._id}`)}
                       />
                     })
                   })}
               </div> :
-              <div className="grid grid-cols-2 gap-4 my-2 px-4" onClick={() => router.push('/diner/details')}>
+              <div className="grid grid-cols-2 gap-4 my-2 px-4">
                 {menuData
                   ?.filter((item) => item?.categoryId === c._id)
                   .map((eachMenu) => {
                     return eachMenu.menus.map((product) => {
-                      return <MenuItem key={product._id} {...product} image={product?.images?.length ? product.images[0] : ""} />
+                      return <MenuItem key={product._id} {...product} image={product?.images?.length ? product.images[0] : ""} onClick={() => router.push(`/diner/details/${product._id}`)} />
                     })
                   })}
               </div> }
@@ -352,16 +356,17 @@ export default function MenuList() {
           )) : null}
         {!isCategoryDisplayed && menuData.length ?
           <section className="mt-2">
-            <div className={`${isCardView ? 'grid grid-cols-2 gap-4' : ''} my-2 px-4`} onClick={() => router.push('/diner/details')}>
-              {/* {menuData
+            <div className={`${isCardView ? 'grid grid-cols-2 gap-4' : ''} my-2 px-4`}>
+              {menuData
                 .map((product, index) => {
-                    return isCardView ? <MenuItem key={product._id} {...product} image={product?.images?.length ? product.images[0] : ""} /> :
+                    return isCardView ? <MenuItem key={product._id} {...product} image={product?.images?.length ? product.images[0] : ""} onClick={() => router.push(`/diner/details/${product._id}`)} /> :
                     <MenuListItem
                         key={index}
                         product={{...product,image: product?.images?.length ? product.images[0] : ""}}
                         hideAddToCart={false}
+                        onClick={() => router.push(`/diner/details/${product._id}`)}
                       />
-                  })} */}
+                  })}
             </div>
           </section>
           : null}

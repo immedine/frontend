@@ -100,38 +100,23 @@ export const menuService = {
     }
   },
 
-  getMenusFromApp: async (params, userType) => {
-    // const { skip = 0, limit = 0, filters = {}, sortConfig = {} } = params;
+  getMenusFromApp: async (params) => {
+    const { filters = {}, sortConfig = {} } = params;
 
-    const response = await axios.post(
-      `http://localhost:8000/api/v1/user/menu/list?skip=0&limit=0`,
+    const response = await axiosInstance.post(
+      `/user/menu/list?skip=0&limit=0`,
       {
-        filters: {
-          restaurantRef: "6881b196255b88026d76cc25"
-        }
-      },
-      {
-        headers: {
-          'x-auth-deviceid': '1234',
-          'x-auth-devicetype': 3
-        }
+        filters,
+        sortConfig
       }
     );
 
     return response.data;
   },
 
-  getMenuItemFromApp: async (id, userType) => {
-    // const { skip = 0, limit = 0, filters = {}, sortConfig = {} } = params;
-
-    const response = await axios.get(
-      `http://localhost:8000/api/v1/user/menu/68822b165f863912dab3332f`,
-      {
-        headers: {
-          'x-auth-deviceid': '1234',
-          'x-auth-devicetype': 3
-        }
-      }
+  getMenuItemFromApp: async (id: string) => {
+    const response = await axiosInstance.get(
+      `/user/menu/${id}`
     );
 
     return response.data;

@@ -127,7 +127,7 @@ export default function MenuItem(menuItem) {
           </div>
         </div>
       )}
-      <MenuItemBox handleAddToCard={handleAddToCard} menuItem={menuData} />
+      <MenuItemBox handleAddToCard={handleAddToCard} menuItem={menuData} onClick={menuItem.onClick} />
     </>
   );
 }

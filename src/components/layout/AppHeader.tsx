@@ -25,7 +25,7 @@ export default function AppHeader() {
   const setUser = useUserStore((state) => state.setUser);
 
   return (
-    <header className={`flex items-center justify-between font-poppins font-xl bg-${!userData?.dark ? 'primary' : 'primary'} pt-4 pb-2 pl-2 pr-2`}>
+    <header className={`flex items-center justify-between font-poppins font-xl bg-[#f5b042] pt-4 pb-2 pl-2 pr-2`}>
         <div className="flex justify-between items-center w-full px-4">
           <Link
             className={`text-white font-semibold text-lg`}

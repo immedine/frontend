@@ -28,7 +28,7 @@ import { Carousel } from '@/components/ui/carousel';
 //   likedBy: 5
 // };
 
-export default function MenuDetailsPage() {
+export default function MenuDetailsPage({menuId}) {
   const [menuData, setMenuData] = useState();
   const [menuItem, setMenuItem] = useState();
   const [menuCount, updateMenuCount] = useState(1);
@@ -52,7 +52,7 @@ export default function MenuDetailsPage() {
   const cartData = [];
 
   const fetchMenuDetails = async () => {
-    const res = await menuService.getMenuItemFromApp();
+    const res = await menuService.getMenuItemFromApp(menuId);
 
     if (res.data && Object.keys(res.data).length) {
       setMenuData(res.data);
@@ -72,8 +72,8 @@ export default function MenuDetailsPage() {
   };
 
   useEffect(() => {
-    fetchMenuDetails();
-  }, []);
+    menuId && fetchMenuDetails();
+  }, [menuId]);
 
   const openModal = (index) => {
     setStartIndex(index);

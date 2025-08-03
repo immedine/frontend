@@ -4,12 +4,13 @@ import { defaultImage } from "@/config/config";
 // import {AddToCart} from "@/components/ui/addToCart";
 
 // import FlyingButton from "react-flying-item";
-export default function MenuItemBox({ menuItem, handleAddToCard }) {
+export default function MenuItemBox({ menuItem, handleAddToCard, onClick }) {
   const { name, description, image, price, inCartCount } = menuItem;
   return (
     <div className="mx-auto  w-full rounded-lg flex flex-col bg-white shadow-[0_0px_5px_rgba(0,0,0,0.25)] hover:shadow-black/25 transition-all relative" style={{
       height: "130px"
     }}
+    onClick={onClick}
     // style={{
     //   backgroundImage: `url(${image})`,
     //   backgroundSize: 'cover',

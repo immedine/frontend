@@ -5,7 +5,7 @@ import { useUserStore } from "@/store/UserStore";
 // import { AddToCart } from "../ui/addToCart";
 import { useEffect, useState } from "react";
 
-export default function MenuListItem({ product, onRemove, hideAddToCart }) {
+export default function MenuListItem({ product, onRemove, hideAddToCart, onClick }) {
   const addToCart = () => {};
   // const addToCart = useCartProductsStore((state) => state.addToCart);
   const userData = useUserStore((state) => state.user);
@@ -47,7 +47,7 @@ export default function MenuListItem({ product, onRemove, hideAddToCart }) {
   return (
     <div className={` py-2 px-2 ${!userData?.dark ? 'bg-[#2f2e33] text-white' : 'bg-white text-black'} rounded-lg mb-4`} style={{
       boxShadow: userData?.dark ? '2px 2px 7px 0px rgba(0,0,0,0.7)' : 'none'
-    }}>
+    }} onClick={onClick}>
       <div className="flex justify-between items-center gap-4">
         {/* <div className="w-16 h-16">
           <Image width={100} height={100} src={product.image} alt={""} className="rounded-lg h-full" />

@@ -100,21 +100,14 @@ export const categoryService = {
     }
   },
 
-  getCategoriesFromApp: async (params, userType) => {
-      // const { skip = 0, limit = 0, filters = {}, sortConfig = {} } = params;
+  getCategoriesFromApp: async (params) => {
+      const { filters = {}, sortConfig = {} } = params;
   
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/user/category/list?skip=0&limit=0`,
+      const response = await axiosInstance.post(
+        `/user/category/list?skip=0&limit=0`,
         {
-          filters: {
-            restaurantRef: "6881b196255b88026d76cc25"
-          }
-        },
-        {
-          headers: {
-            'x-auth-deviceid': '1234',
-            'x-auth-devicetype': 3
-          }
+          filters,
+          sortConfig
         }
       );
   
