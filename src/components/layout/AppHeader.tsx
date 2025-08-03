@@ -14,30 +14,52 @@ import Link from "next/link";
 // } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/store/UserStore";
-export default function AppHeader() {
+import { restaurantService } from "@/services/restaurant.service";
+import { primaryColor } from "@/config/config";
+export default function AppHeader({restaurantId}) {
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const menuItems = [
     { title: "Menu", href: "/menu" },
     // { title: "Contact", href: "/#contact" },
   ];
+  
   const userData = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
 
+  const fetchRestaurantDetails = async () => {
+    const res = await restaurantService.getRestaurantFromApp(restaurantId);
+
+    if (res.data) {
+      console.log("ress ", res.data);
+      setUser({
+        ...userData,
+        restaurant: res.data
+      });
+    }
+  };
+
+  useEffect(() => {
+    restaurantId && !userData?.restaurant && fetchRestaurantDetails();
+  }, [restaurantId]);
+
   return (
-    <header className={`flex items-center justify-between font-poppins font-xl bg-[#f5b042] pt-4 pb-2 pl-2 pr-2`}>
+    <header className={`flex items-center justify-between font-poppins font-xl p-2`} style={{
+      backgroundColor: userData?.restaurant?.primaryColor || primaryColor
+    }}>
         <div className="flex justify-between items-center w-full px-4">
           <Link
             className={`text-white font-semibold text-lg`}
             href="/menu"
           >
-            [Restaurant]
+            {userData?.restaurant?.logo ? <img src={userData?.restaurant?.logo} alt="Restaurant Logo" className="h-12 w-12 mr-2 inline-block" />
+            :userData?.restaurant?.name || "[Restaurant Name]"}
           </Link>
           <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 className="sr-only peer"
-                onChange={() => setUser({dark: !userData?.dark})}
+                onChange={() => setUser({...userData,dark: !userData?.dark})}
                 checked={userData?.dark}
                 aria-label="Toggle dark/light mode"
               />

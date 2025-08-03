@@ -17,5 +17,12 @@ export const restaurantService = {
       `/account/${userType}${RESTAURANT_API}`
     );
     return response.data;
+  },
+
+  getRestaurantFromApp: async (id: string) => {
+    const response = await axiosInstance.get<any>(
+      `/user/${RESTAURANT_API}/${id}`
+    );
+    return response.data;
   }
 };

@@ -11,6 +11,7 @@ import MenuListItem from "@/components/menu/MenuListItem";
 import {categoryService} from '@/services/category.service';
 import { menuService } from "@/services/menu.service";
 import SearchModal from "@/components/ui/SearchModal";
+import { primaryColor } from "@/config/config";
 
 export default function MenuList({restaurantId}) {
   const router = useRouter();
@@ -186,7 +187,9 @@ export default function MenuList({restaurantId}) {
     <div className="h-screen relative">
       {showSearch ?
       <SearchModal open={showSearch} onClose={() => setShowSearch(false)} /> : null}
-      <div className={`flex justify-between px-4 pb-4 bg-[#f5b042]`}>
+      <div className={`flex justify-between px-4 pb-4 bg-[#f5b042]`} style={{
+      backgroundColor: userData?.restaurant?.primaryColor || primaryColor
+    }}>
         <button
           className={`py-2 px-4 border rounded-full transition-colors flex items-center relative 
             ${!userData?.dark ? "bg-[#2f2e33]" : "bg-white"}

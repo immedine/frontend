@@ -17,4 +17,5 @@ export const LangCodes = {
   'Italian': 'it'
 }
 
-export const defaultImage = "https://www.bookmychefs.com/uploads/dish/default_food.jpg";
+export const defaultImage = "/default-food.jpg";
+export const primaryColor = "#f5b042";

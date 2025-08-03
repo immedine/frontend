@@ -1,6 +1,7 @@
 "use client";
 
 import { restaurantService } from '@/services/restaurant.service';
+import { uploadService } from '@/services/upload.service';
 import { usePathname } from 'next/navigation';
 // components/RestaurantForm.jsx
 
@@ -14,8 +15,8 @@ export default function RestaurantForm() {
     name: '',
     logo: null,
     intro: '',
-    primaryColor: '',
-    secondaryColor: '',
+    primaryColor: '#f5b042',
+    secondaryColor: '#ffffff',
   });
 
   const handleChange = (e) => {
@@ -30,6 +31,14 @@ export default function RestaurantForm() {
     e.preventDefault();
     // Handle upload logic here
     console.log(formData);
+    let logoUrl = formData.logo;
+    if (formData.logo && formData.logo instanceof File) {
+      const res = await uploadService.uploadImage(formData.logo, pathname.split('/')[1]);
+      logoUrl = res.data;
+    }
+
+
+    // return;
     const reqBody = {
       name: formData.name,
       introductoryText: formData.intro,
@@ -37,7 +46,7 @@ export default function RestaurantForm() {
       secondaryColor: formData.secondaryColor || ""
     }
     if (formData.logo) {
-      reqBody.logo = formData.logo;
+      reqBody.logo = logoUrl;
     }
     const res = await restaurantService.updateRestaurant(reqBody, pathname.split('/')[1]);
     if (res) {
