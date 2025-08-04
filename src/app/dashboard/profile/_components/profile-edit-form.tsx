@@ -20,44 +20,21 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useUpdateProfile } from '@/hooks/profile/use-profile';
-import { FileUploader } from '@/components/file-uploader';
 import { getAuthUser } from '@/lib/auth';
-
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp'
-];
+import { profileService } from '@/services/profile.service';
+import { usePathname } from 'next/navigation';
 
 const formSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  profilePicture: z
-    .any()
-    .optional()
-    .refine(
-      (files) =>
-        !files || files?.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
-      'Max file size is 5MB'
-    )
-    .refine(
-      (files) =>
-        !files ||
-        files?.length === 0 ||
-        ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported'
-    )
+  email: z.string().email('Invalid email address')
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function ProfileEditForm() {
+  const pathname = usePathname();
   const user = getAuthUser();
-  const { mutate: updateProfile, isPending } = useUpdateProfile();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -65,19 +42,15 @@ export default function ProfileEditForm() {
       firstName: user?.personalInfo.firstName || '',
       lastName: user?.personalInfo.lastName || '',
       email: user?.personalInfo.email || '',
-      profilePicture: undefined
     }
   });
 
-  function onSubmit(values: FormValues) {
+  const onSubmit = async (values: FormValues) => {
     const formData = new FormData();
     formData.append('firstName', values.firstName);
     formData.append('lastName', values.lastName);
     formData.append('email', values.email);
-    if (values.profilePicture?.[0]) {
-      formData.append('profilePicture', values.profilePicture[0]);
-    }
-    updateProfile(formData);
+    profileService.updateProfile(formData, pathname.split('/')[1]);
   }
 
   return (
@@ -132,25 +105,7 @@ export default function ProfileEditForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="profilePicture"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Profile Picture</FormLabel>
-                  <FormControl>
-                    <FileUploader
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      maxFiles={1}
-                      maxSize={MAX_FILE_SIZE}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit">
               Save Changes
             </Button>
           </form>

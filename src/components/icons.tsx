@@ -41,7 +41,8 @@ import {
   Wrench,
   X,
   Hotel,
-  QrCode
+  QrCode,
+  CookingPot
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -77,7 +78,7 @@ export const Icons = {
   role: ShieldCheck,
   admin: UserCog,
   language: Globe2,
-  category: File,
+  category: CookingPot,
   faq: HelpCircle,
   config: Wrench,
   userView: UserCircle2Icon,

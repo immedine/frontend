@@ -13,7 +13,7 @@ export default function ProfilePage() {
   return (
     <PageContainer>
       <div className="space-y-6">
-        <ProfileOverview />
+        {/* <ProfileOverview /> */}
         <ProfileEditForm />
         <PasswordChangeForm />
       </div>

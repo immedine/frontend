@@ -1,12 +1,12 @@
 import axiosInstance from '@/lib/axios/axios.interceptor';
 
-const DASHBOARD_API = '/account/admin/dashboard/stats';
+const DASHBOARD_API = '/dashboard/stats';
 
 export const dashboardService = {
 
-  getDashboard: async () => {
+  getDashboard: async (userType: string) => {
     const response = await axiosInstance.get<SingleRoleResponse>(
-      `${DASHBOARD_API}`
+      `/account/${userType}${DASHBOARD_API}`
     );
     return response.data;
   },

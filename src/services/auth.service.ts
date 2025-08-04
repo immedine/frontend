@@ -34,14 +34,12 @@ export const authService = {
         user: {
           personalInfo: response.data.data.user.personalInfo,
           _id: response.data.data.user._id,
-          isBusinessUser: response.data.data.user?.roleInfo?.isBusinessUser
+          restaurantId: response.data.data.user.restaurantRef
         }
       }));
       if (response.data.data?.user?.roleInfo && Object.keys(response.data.data?.user?.roleInfo).length) {
         let access = "superAdmin";
-        if (response.data.data?.user?.roleInfo?.isBusinessUser) {
-          access = "city,story,route";
-        } else if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
+        if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
           access = response.data.data?.user?.roleInfo?.roleId.permissions.map((each: any) => each.moduleKey).join(",");
         }
         Cookies.set(USER_ACCESS, JSON.stringify(access));

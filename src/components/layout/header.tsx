@@ -18,12 +18,12 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-2 px-4">
-        <div>
+        {/* <div>
           <Button variant="outline" size="icon">
             <BellIcon className="h-[1.2rem] w-[1.2rem]" />
           </Button>
-        </div>
-        <ThemeToggle />
+        </div> */}
+        {/* <ThemeToggle /> */}
         <UserNav />
       </div>
     </header>

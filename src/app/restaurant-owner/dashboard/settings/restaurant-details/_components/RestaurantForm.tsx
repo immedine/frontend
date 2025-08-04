@@ -5,11 +5,12 @@ import { uploadService } from '@/services/upload.service';
 import { usePathname } from 'next/navigation';
 // components/RestaurantForm.jsx
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function RestaurantForm() {
   const pathname = usePathname();
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -30,7 +31,7 @@ export default function RestaurantForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle upload logic here
-    console.log(formData);
+    // console.log(formData);
     let logoUrl = formData.logo;
     if (formData.logo && formData.logo instanceof File) {
       const res = await uploadService.uploadImage(formData.logo, pathname.split('/')[1]);
@@ -71,6 +72,10 @@ export default function RestaurantForm() {
     fetchRestaurantDetails();
   }, []);
 
+  const openFileDialog = () => {
+    fileInputRef?.current?.click();
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -90,12 +95,27 @@ export default function RestaurantForm() {
         </div>
         <div>
           <label className="block mb-1 font-medium">Logo</label>
+          <button
+            type='button'
+            onClick={openFileDialog}
+            className="w-[70px] h-[70px] flex items-center justify-center border border-dashed border-gray-400 rounded bg-gray-100 hover:bg-gray-200 text-2xl"
+          >
+            {formData.logo ? (
+              <img
+                src={typeof formData.logo === 'string' ? formData.logo : URL.createObjectURL(formData.logo)}
+                alt="Restaurant Logo"
+                className="w-full h-full object-cover rounded"
+              />
+            ) : '+'}
+          </button>
+
           <input
             type="file"
-            name="logo"
             accept="image/*"
             onChange={handleChange}
-            className="w-full"
+            ref={fileInputRef}
+            className="hidden"
+            name="logo"
           />
         </div>
       </div>

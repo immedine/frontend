@@ -2,16 +2,19 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import PrintView from "./PreviewPrint";
+import Cookies from "js-cookie";
+import { AUTH_TOKEN } from "@/config/cookie-keys";
 
 export default function QRCodeForm() {
   const [header, setHeader] = useState("");
   const [description, setDescription] = useState("");
   const [qrImage, setQrImage] = useState("");
   const [preview, setPreview] = useState(false)
+  const authData = Cookies.get(AUTH_TOKEN);
 
-  const generateQRCode = async () => {
+  const generateQRCode = async (restId: string) => {
     try {
-      const url = await QRCode.toDataURL("https://fb.com");
+      const url = await QRCode.toDataURL(`https://immedine.com/diner/${restId}`);
       setQrImage(url);
     } catch (err) {
       console.error(err);
@@ -19,8 +22,8 @@ export default function QRCodeForm() {
   };
 
   useEffect(() => {
-    generateQRCode();
-  }, []);
+    authData && generateQRCode(JSON.parse(authData).user.restaurantId);
+  }, [authData]);
 
   return (
     !preview ? <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">

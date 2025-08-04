@@ -1,6 +1,6 @@
 import axiosInstance from '@/lib/axios/axios.interceptor';
 
-const PROFILE_API = '/account/admin/profile';
+const PROFILE_API = '/profile';
 
 export interface ProfileData {
   personalInfo: {
@@ -29,25 +29,21 @@ export const profileService = {
     return response.data;
   },
 
-  updateProfile: async (data: FormData) => {
-    const response = await axiosInstance.put(PROFILE_API, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+  updateProfile: async (data: FormData,userType: string) => {
+    const response = await axiosInstance.put(`/account/${userType}${PROFILE_API}`, data);
     return response.data;
   },
 
-  changePassword: async (data: ChangePasswordData) => {
+  changePassword: async (data: ChangePasswordData, userType: string) => {
     const response = await axiosInstance.put(
-      `${PROFILE_API}/change-password`,
+      `/account/${userType}${PROFILE_API}/change-password`,
       data
     );
     return response.data;
   },
 
-  logout: async () => {
-    const response = await axiosInstance.put(`${PROFILE_API}/logout`);
+  logout: async (userType: string = 'restaurant-owner') => {
+    const response = await axiosInstance.put(`/account/${userType}${PROFILE_API}/logout`);
     return response.data;
   }
 };

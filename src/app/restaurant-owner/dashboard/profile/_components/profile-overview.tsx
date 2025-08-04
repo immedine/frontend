@@ -20,7 +20,7 @@ export default function ProfileOverview() {
     setUserData(getAuthUser());
   }, []);
 
-  const { personalInfo, roleInfo, createdAt } = userData || {};
+  const { personalInfo } = userData || {};
 
   // Get initials for avatar fallback
   const getInitials = () => {
@@ -37,10 +37,6 @@ export default function ProfileOverview() {
       <CardContent>
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-center">
           <Avatar className="h-20 w-20">
-            <AvatarImage
-              src={personalInfo?.profilePicture}
-              alt={personalInfo?.fullName || ''}
-            />
             <AvatarFallback className="text-lg">{getInitials()}</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
@@ -49,14 +45,9 @@ export default function ProfileOverview() {
             </h3>
             <div className="space-y-1 text-sm text-muted-foreground">
               <p>{personalInfo?.email || ''}</p>
-              {roleInfo && (
+              {/* {roleInfo && (
                 <p>Role: {roleInfo.isSuperAdmin ? 'Super Admin' : 'Admin'}</p>
-              )}
-              {personalInfo?.country && <p>Country: {personalInfo.country}</p>}
-              <p>
-                Member since:{' '}
-                {createdAt ? new Date(createdAt).toLocaleDateString() : 'N/A'}
-              </p>
+              )} */}
             </div>
           </div>
         </div>

@@ -13,12 +13,18 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { getAuthUser } from '@/lib/auth';
-import { useLogout } from '@/hooks/profile/use-profile';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { profileService } from '@/services/profile.service';
+import Cookies from 'js-cookie';
+import { AUTH_TOKEN } from '@/config/cookie-keys';
+import { toast } from 'sonner';
 
 export function UserNav() {
-  const { mutate: logout, isPending } = useLogout();
+  const pathname = usePathname();
+  const router = useRouter();
+  // const { mutate: logout, isPending } = useLogout();
   const [userData, setUserData] =
     useState<ReturnType<typeof getAuthUser>>(null);
 
@@ -33,8 +39,15 @@ export function UserNav() {
     return `${personalInfo.firstName[0]}${personalInfo.lastName[0]}`;
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    const res = await profileService.logout(pathname.split('/')[1]);
+    if (res.data) {
+      Cookies.remove(AUTH_TOKEN);
+      // Show success message
+      toast.success('Logged out successfully');
+      // Redirect to login
+      router.push('/restaurant-owner/auth/sign-in');
+    }
   };
 
   return (
@@ -63,7 +76,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href="/dashboard/profile">
+          <Link href={`/${pathname.split('/')[1]}/dashboard/profile`}>
             <DropdownMenuItem>
               Profile
               {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
@@ -73,7 +86,6 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-red-600 focus:text-red-600"
-          disabled={isPending}
           onClick={handleLogout}
         >
           Log out

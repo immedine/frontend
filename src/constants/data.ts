@@ -132,13 +132,13 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Category Menu Management',
+    title: 'Menu',
     url: '/dashboard/settings/category',
     key: 'category',
     icon: 'category',
   },
   {
-    title: 'Restaurant Details',
+    title: 'Restaurant',
     url: '/dashboard/settings/restaurant-details',
     key: 'restaurant',
     icon: 'restaurant',
