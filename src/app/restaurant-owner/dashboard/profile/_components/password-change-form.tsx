@@ -21,6 +21,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useChangePassword } from '@/hooks/profile/use-profile';
+import { profileService } from '@/services/profile.service';
+import { usePathname } from 'next/navigation';
+import { toast } from 'sonner';
 
 const formSchema = z
   .object({
@@ -36,8 +39,8 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 export default function PasswordChangeForm() {
-  const { mutate: changePassword, isPending } = useChangePassword();
-
+  // const { mutate: changePassword, isPending } = useChangePassword();
+  const pathname = usePathname();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,11 +50,15 @@ export default function PasswordChangeForm() {
     }
   });
 
-  function onSubmit(values: FormValues) {
-    changePassword({
+  const onSubmit = async (values: FormValues) => {
+    const res = await profileService.changePassword({
       oldPassword: values.oldPassword,
       newPassword: values.newPassword
-    });
+    }, pathname.split('/')[1]);
+    if (res.data) {
+      toast.success("Password changed successfully!");
+      form.reset();
+    }
   }
 
   return (
@@ -104,7 +111,7 @@ export default function PasswordChangeForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit">
               Change Password
             </Button>
           </form>

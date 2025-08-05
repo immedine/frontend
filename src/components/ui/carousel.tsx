@@ -11,7 +11,7 @@ export function Carousel({ items, openModal }) {
   return (
     <div className="w-full relative h-80">
       {/* Slides */}
-      <div className="overflow-hidden rounded-xl">
+      <div className="overflow-hidden">
         <div
           className="flex transition-transform duration-500"
           style={{ transform: `translateX(-${activeIndex * 100}%)` }}

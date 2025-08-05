@@ -39,11 +39,11 @@ export const profileService = {
       `/account/${userType}${PROFILE_API}/change-password`,
       data
     );
-    return response.data;
+    return response;
   },
 
   logout: async (userType: string = 'restaurant-owner') => {
     const response = await axiosInstance.put(`/account/${userType}${PROFILE_API}/logout`);
-    return response.data;
+    return response;
   }
 };

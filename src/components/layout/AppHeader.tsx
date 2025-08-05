@@ -16,13 +16,15 @@ import { usePathname } from "next/navigation";
 import { useUserStore } from "@/store/UserStore";
 import { restaurantService } from "@/services/restaurant.service";
 import { primaryColor } from "@/config/config";
+import Cookies from "js-cookie";
+import { PRIMARY_COLOR, SECONDARY_COLOR } from "@/config/cookie-keys";
 export default function AppHeader({restaurantId}) {
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
-  const menuItems = [
-    { title: "Menu", href: "/menu" },
-    // { title: "Contact", href: "/#contact" },
-  ];
+  // const pathname = usePathname();
+  // const menuItems = [
+  //   { title: "Menu", href: "/menu" },
+  //   // { title: "Contact", href: "/#contact" },
+  // ];
   
   const userData = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
@@ -31,11 +33,12 @@ export default function AppHeader({restaurantId}) {
     const res = await restaurantService.getRestaurantFromApp(restaurantId);
 
     if (res.data) {
-      console.log("ress ", res.data);
       setUser({
         ...userData,
         restaurant: res.data
       });
+      Cookies.set(PRIMARY_COLOR, res.data.primaryColor || primaryColor);
+      Cookies.set(SECONDARY_COLOR, res.data.secondaryColor || primaryColor);
     }
   };
 

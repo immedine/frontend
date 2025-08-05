@@ -434,7 +434,7 @@ export default function MenuList({restaurantId}) {
 
         </Link> : null}
 
-      <button
+      {/* <button
         className={`fixed bottom-6 left-6 w-12 h-12 rounded-full border bg-primary ${!userData?.dark ? "text-white" : "text-black"} text-md font-bold hover:translate-y-[-2px] active:translate-y-0.5 active:shadow-md transition-all duration-200 outline-none focus:outline-none`}
         onClick={() => toggleMenu(!displayMenu)}
       >
@@ -448,15 +448,12 @@ export default function MenuList({restaurantId}) {
           strokeLinejoin="round"
           className="w-7 h-7 mx-auto"
         >
-          {/* Bell dome */}
           <path d="M4 17h16a1 1 0 0 0 1-1v-1a8 8 0 1 0-18 0v1a1 1 0 0 0 1 1z" />
-          {/* Base line */}
           <path d="M2 21h20" />
-          {/* Bell button top */}
           <path d="M12 5v2" />
           <circle cx="12" cy="4" r="1" />
         </svg>
-      </button>
+      </button> */}
     </div>
   );
 }
