@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from '../switch';
 import ImageGalleryUploader from '../PhotoGalleryWithUploader';
+import { isValid } from '@/lib/utils';
 
 export default function MenuForm({details, submitForm}) {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
+  const [formError, setFormError] = useState({});
   const [formData, setFormData] = useState({
     name: '',
     order: '',
@@ -36,8 +38,25 @@ export default function MenuForm({details, submitForm}) {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // console.log(formData, files);
-    submitForm(formData, files)
+    console.log(formData, files, images);
+
+    if (isValid({
+      requiredFields: {
+        name: true,
+        order: true,
+        price: true,
+        description: true
+      },
+      formError,
+      formDetails: formData,
+      updateError: setFormError
+    })) {
+      submitForm({
+        ...formData,
+        images: images.length ? images.filter(item => !item.includes('blob:')) : [],
+      }, files);
+    }
+    
   };
 
   return (
@@ -46,38 +65,48 @@ export default function MenuForm({details, submitForm}) {
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {/* Name */}
         <div>
-          <label className="block mb-1 font-medium">Name</label>
+          <label className="block mb-1 font-medium">Name*</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500
+              ${formError.name ? 'border-red-500' : 'border-gray-300'}
+              `}
           />
+          {formError.name && <p className='text-red-500 text-sm mt-1'>{formError.name}</p>}
         </div>
 
         {/* Order */}
         <div>
-          <label className="block mb-1 font-medium">Order</label>
+          <label className="block mb-1 font-medium">Order*</label>
           <input
             type="text"
             name="order"
             value={formData.order}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500
+              ${formError.order ? 'border-red-500' : 'border-gray-300'}
+              `}
           />
+          {formError.order && <p className='text-red-500 text-sm mt-1'>{formError.order}</p>}
         </div>
 
         {/* Price */}
         <div>
-          <label className="block mb-1 font-medium">Price (₹)</label>
+          <label className="block mb-1 font-medium">Price (₹)*</label>
           <input
             type="text"
             name="price"
             value={formData.price}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500
+              ${formError.price ? 'border-red-500' : 'border-gray-300'}
+              `}
           />
+          {formError.price && <p className='text-red-500 text-sm mt-1'>{formError.price}</p>}
+
         </div>
 
         {/* Available */}
@@ -129,14 +158,18 @@ export default function MenuForm({details, submitForm}) {
       {/* Description */}
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
         <div>
-          <label className="block mb-1 font-medium">Description</label>
+          <label className="block mb-1 font-medium">Description*</label>
           <textarea
             name="description"
             rows={3}
             value={formData.description}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          ></textarea>
+            className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500
+              ${formError.description ? 'border-red-500' : 'border-gray-300'}
+              `}
+          />
+          {formError.description && <p className='text-red-500 text-sm mt-1'>{formError.description}</p>}
+
         </div>
 
         {/* Ingredients */}

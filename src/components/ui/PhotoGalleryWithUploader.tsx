@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import React, { useRef } from 'react';
 
 export default function ImageGalleryUploader({images, setImages, parentFiles, setFiles}) {
@@ -42,14 +43,33 @@ export default function ImageGalleryUploader({images, setImages, parentFiles, se
         />
 
         {/* Uploaded Images */}
-        <div className="flex gap-3 overflow-x-auto">
+        <div className="flex gap-3 overflow-x-auto relative">
           {images.map((src, index) => (
+            <div key={index} className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  console.log("src ", src)
+                  if (src.includes('blob:')) {
+                    setFiles(prev => prev.filter((file) => {
+                      if (file instanceof File && URL.createObjectURL(file) === src) {
+                        return false;
+                      }
+                    }));
+                  }
+                  setImages(prev => prev.filter((_, i) => i !== index));
+                }}
+                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+              >
+                <X size={16} />
+              </button>
             <img
               key={index}
               src={src}
               alt={`img-${index}`}
               className="w-[70px] h-[70px] object-cover rounded shadow"
             />
+            </div>
           ))}
         </div>
       </div>

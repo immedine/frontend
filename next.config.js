@@ -29,7 +29,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'roodsappbucket.s3.eu-central-1.amazonaws.com',
+        hostname: 'immedine-bucket-1.s3.ap-south-1.amazonaws.com',
         port: ''
       },
       {

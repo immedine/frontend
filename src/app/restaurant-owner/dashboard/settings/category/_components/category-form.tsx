@@ -98,7 +98,7 @@ export default function CategoryForm({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category Name</FormLabel>
+                    <FormLabel>Category Name*</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter category name" {...field} />
                     </FormControl>
@@ -112,7 +112,7 @@ export default function CategoryForm({
                 name="order"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Order</FormLabel>
+                    <FormLabel>Order*</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter category order" {...field} />
                     </FormControl>

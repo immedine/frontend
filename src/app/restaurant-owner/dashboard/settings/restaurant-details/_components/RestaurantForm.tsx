@@ -1,5 +1,6 @@
 "use client";
 
+import { isValid } from '@/lib/utils';
 import { restaurantService } from '@/services/restaurant.service';
 import { uploadService } from '@/services/upload.service';
 import { usePathname } from 'next/navigation';
@@ -11,6 +12,7 @@ import { toast } from 'sonner';
 export default function RestaurantForm() {
   const pathname = usePathname();
   const fileInputRef = useRef(null);
+  const [formError, setFormError] = useState({});
 
   const [formData, setFormData] = useState({
     name: '',
@@ -30,6 +32,16 @@ export default function RestaurantForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isValid({
+      requiredFields: {
+        name: true
+      },
+      formError,
+      formDetails: formData,
+      updateError: setFormError
+    })) {
+      return;
+    }
     // Handle upload logic here
     // console.log(formData);
     let logoUrl = formData.logo;
@@ -83,15 +95,18 @@ export default function RestaurantForm() {
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block mb-1 font-medium">Restaurant Name</label>
+          <label className="block mb-1 font-medium">Restaurant Name*</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            className={`w-full border rounded px-3 py-2
+              ${formError.name ? 'border-red-500' : 'border-gray-300'}
+              
+              `}
           />
+          {formError.name && <p className='text-red-500 text-sm mt-1'>{formError.name}</p>}
         </div>
         <div>
           <label className="block mb-1 font-medium">Logo</label>

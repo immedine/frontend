@@ -8,9 +8,26 @@ import MenuForm from './MenuComponent/MenuForm';
 import MenuItem from './MenuComponent/MenuItem';
 import { Switch } from './switch';
 import { Badge } from './badge';
+import CustomAlertDialog from './alert-dialog';
 
 export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openItem, openMenuItem, setOpenMenuItem, toggleAvailability, fetchMenu, selectedCategory }) {
+
+  const [openDeleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [itemToBeDeleted, setItemToBeDeleted] = useState("");
+
   return (
+    <>
+    {openDeleteConfirmation && <CustomAlertDialog 
+      header={"Delete Confirmation"}
+      description={"Are you sure you want to delete this item?"}
+      submitButtonText={"Delete"}
+      onSubmit={() => {
+        onDelete(itemToBeDeleted);
+        setDeleteConfirmation(false);
+      }}
+      open={openDeleteConfirmation}
+      setOpen={setDeleteConfirmation}
+    />} 
     <Accordion.Root type="single" value={openItem} id={openItem} collapsible className="w-full rounded border border-gray-300">
       {items.map(item => {
         return <Accordion.Item value={`${item.id}`} className="border-b" key={item.id} onClick={() => chooseItem(item)}>
@@ -23,7 +40,7 @@ export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openI
                     <button className="ml-2 align-middle" onClick={(e) => { e.stopPropagation(); onEdit(item.id) }}>
                       <Pencil size={16} />
                     </button>
-                    <button className="ml-2 align-middle" onClick={(e) => { e.stopPropagation(); onDelete(item.id) }}>
+                    <button className="ml-2 align-middle" onClick={(e) => { e.stopPropagation(); setItemToBeDeleted(item.id); setDeleteConfirmation(true); }}>
                       <Trash2 size={16} />
                     </button>
                   </>
@@ -114,5 +131,6 @@ export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openI
 
 
     </Accordion.Root>
+    </>
   );
 }

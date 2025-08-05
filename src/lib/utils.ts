@@ -22,3 +22,56 @@ export function formatBytes(
     sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
   }`;
 }
+
+export const isValid = ({
+  requiredFields,
+  formError,
+  formDetails,
+  updateError
+}) => {
+  let noError = true;
+  const localError = { ...formError };
+
+  console.log("requiredFields ", requiredFields)
+
+  if (requiredFields && Object.keys(requiredFields).length) {
+    for (let item in requiredFields) {
+      if (typeof formDetails[item] === "string" && formDetails[item] !== null) {
+        if (!formDetails[item].toString().trim().length) {
+          noError = false;
+          localError[item] = "This is required";
+        } else if (item === "email") {
+          const reg = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+          if (!reg.test(formDetails[item])) {
+            noError = false;
+            localError[item] = "Please provide a valid email";
+          }
+        } else {
+          localError[item] = "";
+        }
+      } else if (typeof formDetails[item] !== "string" && formDetails[item] === null) {
+        noError = false;
+        localError[item] = "This is required";
+      } else if (formDetails[item] === undefined) {
+        noError = false;
+        localError[item] = "This is required";
+      } else if (typeof formDetails[item] === "object" && !Array.isArray(formDetails[item])) {
+        const obj = formDetails[item];
+        for (let each in obj) {
+          if (!obj[each].toString().trim().length) {
+            noError = false;
+            localError[each] = "This is required";
+          } else {
+            localError[each] = "";
+          }
+        }
+
+      }
+    }
+  }
+
+  console.log("error ", localError, noError, formDetails)
+
+  updateError({ ...localError });
+  return noError;
+};
