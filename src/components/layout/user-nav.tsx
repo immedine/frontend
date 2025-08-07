@@ -20,6 +20,7 @@ import { profileService } from '@/services/profile.service';
 import Cookies from 'js-cookie';
 import { AUTH_TOKEN } from '@/config/cookie-keys';
 import { toast } from 'sonner';
+import { getPathName } from '@/lib/utils';
 
 export function UserNav() {
   const pathname = usePathname();
@@ -40,13 +41,13 @@ export function UserNav() {
   };
 
   const handleLogout = async () => {
-    const res = await profileService.logout(pathname.split('/')[1]);
+    const res = await profileService.logout(getPathName(pathname));
     if (res.data) {
       Cookies.remove(AUTH_TOKEN);
       // Show success message
       toast.success('Logged out successfully');
       // Redirect to login
-      router.push('/restaurant-owner/auth/sign-in');
+      router.push('/auth/sign-in');
     }
   };
 
@@ -76,7 +77,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href={`/${pathname.split('/')[1]}/dashboard/profile`}>
+          <Link href={`${getPathName(pathname,true)}/profile`}>
             <DropdownMenuItem>
               Profile
               {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}

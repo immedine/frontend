@@ -32,6 +32,7 @@ import * as React from 'react';
 import { Icons } from '@/components/icons';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { getPathName } from '@/lib/utils';
 
 
 export const company = {
@@ -145,7 +146,7 @@ export default function AppSidebar() {
                               asChild
                               isActive={pathname === subItem.url}
                             >
-                              <Link href={`/${pathname.split('/')[1]}${subItem.url}`}>
+                              <Link href={`${getPathName(pathname, true)}${subItem.url}`}>
                                 <span>{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>
@@ -162,7 +163,7 @@ export default function AppSidebar() {
                     tooltip={item.title}
                     isActive={pathname === item.url}
                   >
-                    <Link href={`/${pathname.split('/')[1]}${item.url}`}>
+                    <Link href={`${getPathName(pathname, true)}${item.url}`}>
                       <Icon />
                       <span>{item.title}</span>
                     </Link>

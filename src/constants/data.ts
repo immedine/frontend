@@ -125,7 +125,7 @@ export type Product = {
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
-    url: '/dashboard/overview',
+    url: '/dashboard',
     key: 'dashboard',
     icon: 'dashboard',
     isActive: true,
@@ -133,19 +133,19 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Menu',
-    url: '/dashboard/settings/category',
+    url: '/category',
     key: 'category',
     icon: 'category',
   },
   {
     title: 'Restaurant',
-    url: '/dashboard/settings/restaurant-details',
+    url: '/restaurant-details',
     key: 'restaurant',
     icon: 'restaurant',
   },
   {
     title: 'Print QR',
-    url: '/dashboard/settings/print-qr',
+    url: '/print-qr',
     key: 'qr',
     icon: 'qr',
   },

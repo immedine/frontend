@@ -19,6 +19,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '@/services/auth.service';
+import { getPathName } from '@/lib/utils';
 
 const formSchema = z
   .object({
@@ -60,9 +61,9 @@ export default function ResetPasswordForm() {
       email: values.email,
       otp: values.otp,
       password: values.password
-    }, pathname.split('/')[1]);
+    }, getPathName(pathname));
     if (res) {
-      router.push(`/${pathname.split('/')[1]}/auth/sign-in`);
+      router.push(`${getPathName(pathname, true)}/auth/sign-in`);
     }
   }
 

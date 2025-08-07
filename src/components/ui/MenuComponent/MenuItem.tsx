@@ -1,6 +1,7 @@
 "use client";
 
 import MyAccordion from "@/components/ui/accordion";
+import { getPathName } from "@/lib/utils";
 import { menuService } from "@/services/menu.service";
 import { uploadService } from "@/services/upload.service";
 import { usePathname } from "next/navigation";
@@ -14,7 +15,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
   const toggleAvailability = async (item: any) => {
     const res = await menuService.updateMenu(item.id, {
       isAvailable: !item.isAvailable
-    }, pathname.split('/')[1]);
+    }, getPathName(pathname));
 
     if (res) {
       setLocalItems(localItems.map(each => {
@@ -38,7 +39,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
     const fileImages = images.filter(item => item instanceof File);
     if (fileImages && fileImages.length) {
       for (let img in fileImages.filter(item => item instanceof File)) {
-        const res = await uploadService.uploadImage(fileImages[img], pathname.split('/')[1]);
+        const res = await uploadService.uploadImage(fileImages[img], getPathName(pathname));
 
         imageUrls.push(res.data);
       }
@@ -60,7 +61,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
         images: data.images ? [...data.images, ...imageUrls] : [...imageUrls],
         ingredients: data.ingredients && data.ingredients.length ?
           data.ingredients.includes('\n') ? data.ingredients.split('\n') : [data.ingredients] : []
-      }, pathname.split('/')[1]);
+      }, getPathName(pathname));
 
       if (res) {
         // setLocalItems(localItems.map(each => {
@@ -89,7 +90,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
         description: data.description,
         ingredients: data.ingredients && data.ingredients.length ?
           data.ingredients.includes('\n') ? data.ingredients.split('\n') : [data.ingredients] : []
-      }, pathname.split('/')[1]);
+      }, getPathName(pathname));
       if (res) {
         fetchMenu();
       }
@@ -99,7 +100,7 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
   };
 
   const onDelete = async (id: string) => {
-    const res = await menuService.deleteMenu(id, pathname.split('/')[1]);
+    const res = await menuService.deleteMenu(id, getPathName(pathname));
     if (res) {
       fetchMenu();
     }

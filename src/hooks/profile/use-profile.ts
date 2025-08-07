@@ -41,7 +41,7 @@ export function useLogout() {
       // Show success message
       toast.success('Logged out successfully');
       // Redirect to login
-      router.push('/restaurant-owner/auth/sign-in');
+      router.push('/auth/sign-in');
 
     },
     onError: (error: any) => {

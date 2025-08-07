@@ -20,6 +20,7 @@ import {
 import { authService } from '@/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getPathName } from '@/lib/utils';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address')
@@ -41,10 +42,10 @@ export default function ForgotPasswordView() {
 
   const onSubmit =  async (values: FormValues) => {
     setPending(true);
-    const res = await authService.requestPasswordReset(values, pathname.split('/')[1]);
+    const res = await authService.requestPasswordReset(values, getPathName(pathname));
     setPending(false);
     if (res) {
-      router.push(`/${pathname.split('/')[1]}/auth/reset-password?email=${values.email}`);
+      router.push(`${getPathName(pathname, true)}/auth/reset-password?email=${values.email}`);
     }
   }
 
@@ -53,7 +54,7 @@ export default function ForgotPasswordView() {
       title="Forgot Password"
       description="Enter your email and we'll send you a reset link"
       backButtonLabel="Back to Sign In"
-      backButtonHref={`/${pathname.split('/')[1]}/auth/sign-in`}
+      backButtonHref={`${getPathName(pathname,true)}/auth/sign-in`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

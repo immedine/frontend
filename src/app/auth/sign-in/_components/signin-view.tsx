@@ -20,6 +20,7 @@ import {
 import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
+import { getPathName } from '@/lib/utils';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -45,10 +46,10 @@ export default function SignInView() {
 
   const onSubmit = async (values: FormValues) => {
     setPending(true);
-    const res = await authService.login(values, pathname.split('/')[1]);
+    const res = await authService.login(values, getPathName(pathname));
     setPending(false);
     if (res) {
-      router.push(`/${pathname.split('/')[1]}/dashboard/overview`);
+      router.push(`${getPathName(pathname, true)}/dashboard`);
     }
   }
 
@@ -124,7 +125,7 @@ export default function SignInView() {
           </Button>
           <div className="text-center text-sm">
             <Link
-              href={`/${pathname.split('/')[1]}/auth/forgot-password`}
+              href={`${getPathName(pathname, true)}/auth/forgot-password`}
               className="text-muted-foreground underline-offset-4 hover:underline"
             >
               Forgot your password?

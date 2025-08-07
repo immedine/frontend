@@ -12,7 +12,7 @@ export default function LogGuard({
   const storeVal = cookieStore.get(AUTH_TOKEN)?.value;
 
   if (storeVal) {
-    return redirect('/dashboard/overview');
+    return redirect('/dashboard');
   } else {
     return children;
   }

@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import ControlledDialog from "./dialog";
 import { useState } from "react";
-import CategoryViewPage from "@/app/restaurant-owner/dashboard/settings/category/_components/category-view-page";
 import CategoryForm from "@/app/restaurant-owner/dashboard/settings/category/_components/category-form";
+import { getPathName } from "@/lib/utils";
 
 interface HeaderWithButtonProps {
   title: string;
@@ -43,7 +43,7 @@ const HeaderWithButton = ({
     />
     {buttonHref ?
     <Link
-      href={`/${pathname.split('/')[1]}${buttonHref}`}
+      href={`${getPathName(pathname, true)}${buttonHref}`}
       className={buttonClass}
     >
       <Plus className="mr-2 h-4 w-4" /> {buttonText}

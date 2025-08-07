@@ -31,7 +31,7 @@ export function useLogin() {
       }
       
       toast.success('Login successful');
-      router.push('/dashboard/overview');
+      router.push('/dashboard');
     },
     // onError: (error: any) => {
     //   toast.error(error?.message || 'Login failed');
@@ -62,7 +62,7 @@ export function useResetPassword() {
     mutationFn: authService.resetPassword,
     onSuccess: () => {
       toast.success('Password reset successful');
-      router.push('/restaurant-owner/auth/sign-in');
+      router.push('/auth/sign-in');
     },
     // onError: (error: any) => {
     //   toast.error(error?.message || 'Password reset failed');

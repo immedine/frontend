@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import AuthLayout from '../../_components/auth-layout';
 import ResetPasswordForm from './reset-password-form';
 import { usePathname } from 'next/navigation';
+import { getPathName } from '@/lib/utils';
 
 export default function ResetPasswordView() {
   const pathname = usePathname();
@@ -13,7 +14,7 @@ export default function ResetPasswordView() {
       title="Reset Password"
       description="Enter the OTP sent to your email and your new password"
       backButtonLabel="Back to Sign In"
-      backButtonHref={`/${pathname.split('/')[1]}/auth/sign-in`}
+      backButtonHref={`${getPathName(pathname, true)}/auth/sign-in`}
     >
       <Suspense fallback={<div>Loading...</div>}>
         <ResetPasswordForm />

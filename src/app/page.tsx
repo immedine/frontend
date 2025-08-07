@@ -10,7 +10,7 @@ export default function Home() {
 
   redirect('/index.html')
   // if (storeVal) {
-  //   return redirect('/restaurant-owner/dashboard/overview');
+  //   return redirect('/restaurant-owner/dashboard');
   // } else {
   //   return redirect('/restaurant-owner/auth/sign-in');
   // }
