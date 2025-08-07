@@ -124,7 +124,7 @@ export default function SignInView() {
           </Button>
           <div className="text-center text-sm">
             <Link
-              href="/auth/forgot-password"
+              href={`/${pathname.split('/')[1]}/auth/forgot-password`}
               className="text-muted-foreground underline-offset-4 hover:underline"
             >
               Forgot your password?

@@ -118,6 +118,10 @@
     @apply font-poppins font-semibold;
   }
 
+  a {
+    color: #b7411f;
+  }
+
   p,
   span,
   div {

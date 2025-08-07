@@ -35,7 +35,7 @@ import { useState, useEffect } from 'react';
 
 
 export const company = {
-  name: 'Roods',
+  name: 'ImmeDine',
   logo: GalleryVerticalEnd,
   plan: 'Admin'
 };
@@ -99,12 +99,12 @@ export default function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex gap-2 py-2 text-sidebar-accent-foreground ">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
+          <div className="flex aspect-square items-center justify-center rounded-lg text-sidebar-primary-foreground ml-2">
             <Image
-              src="/roods-logo-icon.png"
+              src="/logo.png"
               alt="logo"
-              width={25}
-              height={25}
+              width={30}
+              height={30}
             />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight items-center">

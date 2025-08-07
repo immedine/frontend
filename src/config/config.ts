@@ -18,4 +18,4 @@ export const LangCodes = {
 }
 
 export const defaultImage = "/default-food.jpg";
-export const primaryColor = "#f5b042";
+export const primaryColor = "#b7411f";

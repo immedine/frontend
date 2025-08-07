@@ -25,7 +25,7 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: '#b7411f',
           foreground: 'hsl(var(--primary-foreground))'
         },
         secondary: {
@@ -38,7 +38,7 @@ module.exports = {
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
+          foreground: '#b7411f'
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
@@ -54,13 +54,13 @@ module.exports = {
         },
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
-          foreground: 'hsl(var(--sidebar-foreground))',
+          foreground: '#b7411f',
           primary: 'hsl(var(--sidebar-primary))',
           'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
           accent: 'hsl(var(--sidebar-accent))',
-          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          'accent-foreground': '#b7411f',
           border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))'
+          ring: '#b7411f'
         }
       },
       borderRadius: {

@@ -44,7 +44,7 @@ export default function ForgotPasswordView() {
     const res = await authService.requestPasswordReset(values, pathname.split('/')[1]);
     setPending(false);
     if (res) {
-      router.push(`/auth/reset-password?email=${values.email}`);
+      router.push(`/${pathname.split('/')[1]}/auth/reset-password?email=${values.email}`);
     }
   }
 

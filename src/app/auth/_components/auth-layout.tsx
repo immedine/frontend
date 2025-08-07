@@ -37,7 +37,7 @@ export default function AuthLayout({
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
         <div className="absolute inset-0">
           <Image
-            src="/bg-auth.jpg"
+            src="/bg-auth.jpeg"
             alt="bg"
             fill
             className="object-cover"
@@ -48,7 +48,7 @@ export default function AuthLayout({
       <div className="flex h-full items-center p-4 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col items-center space-y-2 text-center">
-            <Image alt="logo" src="/roods-logo.png" width={200} height={200} />
+            <Image alt="logo" src="/text-logo.png" width={200} height={200} />
             <h1 className="font-poppins text-2xl font-semibold tracking-tight">
               {title}
             </h1>

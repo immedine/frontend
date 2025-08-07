@@ -191,7 +191,7 @@ export default function MenuForm({details, submitForm}) {
       <div className='flex justify-end'>
         <button
           type="submit"
-          className="w-24 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded"
+          className="w-24 bg-primary text-white font-medium py-2 px-4 rounded"
         >
           Submit
         </button>

@@ -62,7 +62,7 @@ export default function ResetPasswordForm() {
       password: values.password
     }, pathname.split('/')[1]);
     if (res) {
-      router.push(`/restaurant-owner/auth/sign-in`);
+      router.push(`/${pathname.split('/')[1]}/auth/sign-in`);
     }
   }
 
