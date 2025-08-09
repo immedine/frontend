@@ -4,7 +4,8 @@ import axiosInstance from '@/lib/axios/axios.interceptor';
 import {
   LOGIN_API,
   FORGOT_PASSWORD_API,
-  RESET_PASSWORD_API
+  RESET_PASSWORD_API,
+  REGISTER_API
 } from '@/lib/axios/apis';
 import Cookies from 'js-cookie';
 import { AUTH_TOKEN, USER_ACCESS } from '@/config/cookie-keys';
@@ -46,6 +47,16 @@ export const authService = {
       }
       
       toast.success('Login successful');
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  register: async (credentials: any, userType: string) => {
+    const response = await axiosInstance.post(`${api}/${userType}${REGISTER_API}`, credentials);
+    if (response.data) {   
+      toast.success('Registration successful');
       return true;
     } else {
       return false;

@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import ControlledDialog from "./dialog";
 import { useState } from "react";
-import CategoryForm from "@/app/restaurant-owner/dashboard/settings/category/_components/category-form";
 import { getPathName } from "@/lib/utils";
+import CategoryForm from "@/app/category/_components/category-form";
 
 interface HeaderWithButtonProps {
   title: string;

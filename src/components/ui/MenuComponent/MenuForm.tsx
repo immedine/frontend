@@ -34,6 +34,12 @@ export default function MenuForm({details, submitForm}) {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+     setFormError((prev) => {
+      return {
+        ...prev,
+        [name]: ""
+      }
+    })
   };
 
   const handleSubmit = (e: any) => {

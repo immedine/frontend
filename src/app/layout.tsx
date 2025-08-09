@@ -5,8 +5,11 @@ import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Roods Admin',
-  description: 'Admin panel for Roods'
+  title: 'ImmeDine',
+  description: 'ImmeDine - A better dining experience',
+  icons: {
+    icon: '/assets/fav.ico',
+  },
 };
 const poppins = Poppins({
   subsets: ['latin'],

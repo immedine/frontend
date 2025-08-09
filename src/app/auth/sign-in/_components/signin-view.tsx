@@ -123,7 +123,13 @@ export default function SignInView() {
             )}
             Sign In
           </Button>
-          <div className="text-center text-sm">
+          <div className="flex justify-between text-sm">
+            <Link
+              href={`${getPathName(pathname, true)}/auth/register`}
+              className="text-muted-foreground underline-offset-4 hover:underline"
+            >
+              Create Restaurant
+            </Link>
             <Link
               href={`${getPathName(pathname, true)}/auth/forgot-password`}
               className="text-muted-foreground underline-offset-4 hover:underline"

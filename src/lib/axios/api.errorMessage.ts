@@ -42,31 +42,25 @@ const ApiErrorMessage = {
 
   // CATEGORY
   1311: 'This category already exists.',
-
-  // CITY
-  1321: 'This city already exists.',
-
-  // STORY
-  1341: 'This story already exists.',
-  1342: 'This story is already saved.',
-
-  // ROUTE
-  1361: 'This route already exists.',
-  1362: 'This route is already saved.',
+  1312: 'Category not found..',
 
   // FAQ
   1381: 'This FAQ already exists.',
 
-  // ADVERTISEMENT
-  1391: 'This advertisement already exists.',
-
   // GLOBAL CONFIG
   1400: 'Global configuration not found.',
 
-  // LOCATION
-  1450: 'This location already exists.',
+  1500: 'Email or password Invalid',
+  1501: 'Owner suspended',
+  1502: 'Owner email already exists',
+  1503: 'Owner has been deleted',
+  1504: 'Owner blocked by admin',
+  1506: 'Owner already exists for this role',
 
-  1500: 'Email or password Invalid'
+  1550: 'Restaurant already exists',
+
+  1600: 'Menu already exists',
+  1601: 'Menu not found'
 };
 
 export default ApiErrorMessage;

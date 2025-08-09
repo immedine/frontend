@@ -45,7 +45,7 @@ export default function AuthLayout({
           />
         </div>
       </div>
-      <div className="flex h-full items-center p-4 lg:p-8">
+      <div className="flex h-full items-center p-4 lg:p-8 overflow-y-auto">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col items-center space-y-2 text-center">
             <Image alt="logo" src="/text-logo.png" width={200} height={200} />
