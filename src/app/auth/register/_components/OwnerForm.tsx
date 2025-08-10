@@ -17,9 +17,10 @@ export default function OwnerForm({
   const [formError, setFormError] = useState({});
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     email: '',
+    phoneNumber: '',
     password: '',
     confirmPassword: ''
   });
@@ -27,9 +28,10 @@ export default function OwnerForm({
   useEffect(() => {
       if (ownerData && Object.keys(ownerData).length) {
         setFormData({
-          firstName: ownerData.firstName,
-          lastName: ownerData.lastName,
+          // firstName: ownerData.firstName,
+          // lastName: ownerData.lastName,
           email: ownerData.email,
+          phoneNumber: ownerData.phoneNumber,
           password: ownerData.password,
           confirmPassword: ownerData.confirmPassword
         });
@@ -54,9 +56,10 @@ export default function OwnerForm({
     e.preventDefault();
     if (!isValid({
       requiredFields: {
-        firstName: true,
-        lastName: true,
+        // firstName: true,
+        // lastName: true,
         email: true,
+        phoneNumber: true,
         password: true,
         confirmPassword: true
       },
@@ -64,6 +67,14 @@ export default function OwnerForm({
       formDetails: formData,
       updateError: setFormError
     })) {
+      return;
+    }
+
+    if (formData.phoneNumber && formData.phoneNumber.length < 10) {
+      setFormError((prev) => ({
+        ...prev,
+        phoneNumber: "Mobile number must be at least 10 digits"
+      }));
       return;
     }
 
@@ -86,7 +97,7 @@ export default function OwnerForm({
       onSubmit={handleSubmit}
       className={`space-y-3 `}
     >
-      <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
+      {/* <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
         <div>
           <label className="block mb-1 font-medium">Owner First Name*</label>
           <input
@@ -115,15 +126,16 @@ export default function OwnerForm({
           />
           {formError.lastName && <p className='text-red-500 text-sm mt-1'>{formError.lastName}</p>}
         </div>
-      </div>
+      </div> */}
       <div>
         <div>
-          <label className="block mb-1 font-medium">Owner Email Address*</label>
+          <label className="block mb-1 font-medium">Contact Email Address</label>
           <input
             type="text"
             name="email"
             value={formData.email}
             onChange={handleChange}
+            placeholder='Enter email address'
             className={`w-full border rounded px-3 py-2
               ${formError.email ? 'border-red-500' : 'border-gray-300'}
               
@@ -134,12 +146,35 @@ export default function OwnerForm({
       </div>
       <div>
         <div>
-          <label className="block mb-1 font-medium">Enter Password*</label>
+          <label className="block mb-1 font-medium">Contact Mobile Number</label>
+          <input
+            type="text"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={e => { handleChange({
+              target: {
+                name: 'phoneNumber',
+                value: e.target.value.replace(/\D/, '')
+              }
+            })}}
+            placeholder='Enter mobile number'
+            className={`w-full border rounded px-3 py-2
+              ${formError.phoneNumber ? 'border-red-500' : 'border-gray-300'}
+              
+              `}
+          />
+          {formError.phoneNumber && <p className='text-red-500 text-sm mt-1'>{formError.phoneNumber}</p>}
+        </div>
+      </div>
+      <div>
+        <div>
+          <label className="block mb-1 font-medium">Enter Password</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
+            placeholder='Enter password'
             className={`w-full border rounded px-3 py-2
               ${formError.password ? 'border-red-500' : 'border-gray-300'}
               
@@ -150,11 +185,12 @@ export default function OwnerForm({
       </div>
       <div>
         <div>
-          <label className="block mb-1 font-medium">Confirm Password*</label>
+          <label className="block mb-1 font-medium">Confirm Password</label>
           <input
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
+            placeholder='Confirm password'
             onChange={handleChange}
             className={`w-full border rounded px-3 py-2
               ${formError.confirmPassword ? 'border-red-500' : 'border-gray-300'}

@@ -29,9 +29,9 @@ import { AUTH_TOKEN } from '@/config/cookie-keys';
 import { getPathName } from '@/lib/utils';
 
 const formSchema = z.object({
-  firstName: z.string().min(2, 'First name must be at least 2 characters'),
-  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  email: z.string().email('Invalid email address')
+  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+  email: z.string().email('Invalid email address'),
+  phoneNumber: z.string().min(10, 'Mobile number must be at least 10 digits'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -43,18 +43,23 @@ export default function ProfileEditForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: user?.personalInfo.firstName || '',
-      lastName: user?.personalInfo.lastName || '',
+      fullName: user?.personalInfo.fullName || '',
       email: user?.personalInfo.email || '',
+      phoneNumber: user?.personalInfo.phone?.number || '',
     }
   });
 
   const onSubmit = async (values: FormValues) => {
-    const formData = new FormData();
-    formData.append('firstName', values.firstName);
-    formData.append('lastName', values.lastName);
-    formData.append('email', values.email);
-    const res = await profileService.updateProfile(formData, getPathName(pathname));
+    // const formData = new FormData();
+    // formData.append('fullName', values.fullName);
+    // formData.append('email', values.email);
+    const res = await profileService.updateProfile({
+      fullName: values.fullName,
+      email: values.email,
+      phone: {
+        number: values.phoneNumber
+      }
+    }, getPathName(pathname));
     if (res.data) {
       toast.success("Profile updated successfully!");
       const token = Cookies.get(AUTH_TOKEN);
@@ -88,10 +93,10 @@ export default function ProfileEditForm() {
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="firstName"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -101,31 +106,33 @@ export default function ProfileEditForm() {
               />
               <FormField
                 control={form.control}
-                name="lastName"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} type="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+             <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="email"
+              name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Mobile Number</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" />
+                    <Input {...field} type="tel" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            </div>
             <Button type="submit">
               Save Changes
             </Button>

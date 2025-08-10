@@ -128,7 +128,7 @@ export default function SignInView() {
               href={`${getPathName(pathname, true)}/auth/register`}
               className="text-muted-foreground underline-offset-4 hover:underline"
             >
-              Create Restaurant
+              <b>Create Account</b>
             </Link>
             <Link
               href={`${getPathName(pathname, true)}/auth/forgot-password`}

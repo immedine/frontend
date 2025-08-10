@@ -119,14 +119,15 @@ export default function RestaurantForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`${!isRegister ? 'max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md space-y-6' : 'space-y-2'} `}
+      className={`${!isRegister ? 'max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md space-y-6' : 'space-y-3'} `}
     >
       <div className={`${!isRegister ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : ''}`}>
         <div>
-          <label className="block mb-1 font-medium">Restaurant Name*</label>
+          <label className="block mb-1 font-medium">Name (Restaurant/ Cafe/ Bar etc.)</label>
           <input
             type="text"
             name="name"
+            placeholder='Enter name'
             value={formData.name}
             onChange={handleChange}
             className={`w-full border rounded px-3 py-2
@@ -165,11 +166,12 @@ export default function RestaurantForm({
       </div>
 
       <div>
-        <label className="block mb-1 font-medium">Introductory Text</label>
+        <label className="block mb-1 font-medium">Introduction</label>
         <textarea
           name="intro"
           value={formData.intro}
           onChange={handleChange}
+          placeholder='Enter introductory text'
           rows={3}
           className="w-full border border-gray-300 rounded px-3 py-2"
         ></textarea>

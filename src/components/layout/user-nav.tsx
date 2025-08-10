@@ -36,8 +36,8 @@ export function UserNav() {
   const { personalInfo } = userData || {};
 
   const getInitials = () => {
-    if (!personalInfo?.firstName || !personalInfo?.lastName) return '';
-    return `${personalInfo.firstName[0]}${personalInfo.lastName[0]}`;
+    if (!personalInfo?.fullName) return '';
+    return `${personalInfo.fullName[0]}`;
   };
 
   const handleLogout = async () => {

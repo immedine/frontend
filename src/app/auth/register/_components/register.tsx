@@ -17,7 +17,14 @@ export default function Register() {
 
   const onSubmit = async (values: FormValues) => {
     const reqBody = {
-      ownerDetails: values,
+      ownerDetails: {
+        ...values,
+        fullName: restaurantData.name,
+        phone: {
+          countryCode: 'IN',
+          number: values.phoneNumber || ""
+        }
+      },
       restaurantDetails: restaurantData
     };
     setOwnerData(values);
@@ -40,8 +47,8 @@ export default function Register() {
 
   return (
     <AuthLayout
-      title="Create Restaurant"
-      description="Fill in the details to create your own restaurant"
+      title="Create Account"
+      description="Fill in the details to create your account"
     >
       {currentView === 1 ? <RestaurantForm 
         isRegister={true}
