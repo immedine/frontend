@@ -112,7 +112,7 @@ export default function CategoryListingPage() {
           selectedCategory={selectedCategory}
           fetchMenu={fetchMenu}
         />
-        : null}
+        : <div className="flex items-center justify-center p-4">No categories available!</div>}
     </>
   );
 }
