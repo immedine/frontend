@@ -35,17 +35,17 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
   }, [items]);
 
   const onEdit = async (data, images) => {
-    const imageUrls = [];
+    let imageUrls = [];
     const fileImages = images.filter(item => item instanceof File);
     if (fileImages && fileImages.length) {
-      for (let img in fileImages.filter(item => item instanceof File)) {
-        const res = await uploadService.uploadImage(fileImages[img], getPathName(pathname));
-
-        imageUrls.push(res.data);
-      }
-      
+        const res = await uploadService.uploadImages(fileImages, getPathName(pathname));
+        if (res.data && res.data.length) {
+          imageUrls = imageUrls.concat(res.data);
+        }
+        
     }
     
+    // return;
 
     if (data.id !== "-1") {
       const res = await menuService.updateMenu(data.id, {

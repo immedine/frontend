@@ -4,11 +4,23 @@ const UPLOAD_API = '/common';
 
 export const uploadService = {
   uploadImage: async (file: File, userType: string) => {
-    console.log("file ",file)
     const formData = new FormData();
     formData.append('image', file);
 
     const response = await axiosInstance.post(`/account/${userType}${UPLOAD_API}/upload-image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  },
+
+  uploadImages: async (file: File, userType: string) => {
+    const formData = new FormData();
+    for (let i = 0; i < file.length; i++) {
+      formData.append("image", file[i]); // name must match multer's field name
+    }
+    const response = await axiosInstance.post(`/account/${userType}${UPLOAD_API}/upload-multiple-images`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
