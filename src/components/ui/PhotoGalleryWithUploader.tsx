@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import React, { useRef } from 'react';
+import { toast } from 'sonner';
 
 export default function ImageGalleryUploader({images, setImages, parentFiles, setFiles}) {
   const fileInputRef = useRef(null);
@@ -7,6 +8,11 @@ export default function ImageGalleryUploader({images, setImages, parentFiles, se
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map(file => URL.createObjectURL(file));
+
+    if (((images.length || 0) + newImages.length) > 5) {
+      toast.error("You can only upload up to 5 images.");
+      return;
+    }
     setImages(prev => [ ...newImages, ...prev]);
 
     let localParentFiles = parentFiles;
