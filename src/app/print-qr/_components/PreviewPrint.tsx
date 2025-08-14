@@ -42,6 +42,7 @@ const PrintView = ({header, description, qrImage, setPreview}) => {
             alt="QR Code"
             className="mx-auto w-48 h-48"
             />
+            <p className="text-md"><span className="text-xs">Sponsored by: </span><b>ImmeDine</b></p>
         </div>
       </div>
     </div>

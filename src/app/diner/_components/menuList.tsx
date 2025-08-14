@@ -12,6 +12,8 @@ import {categoryService} from '@/services/category.service';
 import { menuService } from "@/services/menu.service";
 import SearchModal from "@/components/ui/SearchModal";
 import { primaryColor } from "@/config/config";
+import SplashScreen from "./loader";
+import AppHeader from "@/components/layout/AppHeader";
 
 export default function MenuList({restaurantId}) {
   const router = useRouter();
@@ -30,6 +32,7 @@ export default function MenuList({restaurantId}) {
   const [showSearch, setShowSearch] = useState(false);
 
   const userData = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
 
   const fetchCategories = async () => {
     const res = await categoryService.getCategoriesFromApp({
@@ -183,7 +186,20 @@ export default function MenuList({restaurantId}) {
 
   };
 
+  useEffect(() =>{
+    setTimeout(() => {
+      setUser({
+        ...userData,
+        loading: false
+      })
+    }, 1500);
+  }, []);
+
   return (
+    <>
+    {userData?.loading ? <SplashScreen /> :
+    <>
+    <AppHeader restaurantId={restaurantId} />
     <div className="h-screen relative">
       {showSearch ?
       <SearchModal open={showSearch} onClose={() => setShowSearch(false)} /> : null}
@@ -455,5 +471,7 @@ export default function MenuList({restaurantId}) {
         </svg>
       </button> */}
     </div>
+    </>}
+    </>
   );
 }

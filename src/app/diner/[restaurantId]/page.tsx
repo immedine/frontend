@@ -9,7 +9,6 @@ export default async function Page(params: { restaurantId: string }) {
   return (
     // <PageContainer>
       <div className="">
-        <AppHeader restaurantId={params?.params?.restaurantId} />
         <MenuList restaurantId={params?.params?.restaurantId} />
       </div>
     // </PageContainer>

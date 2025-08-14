@@ -95,7 +95,7 @@ export default function MenuItem(menuItem) {
               className="overflow-y-scroll p-2"
               style={{ maxHeight: "calc(100vh - 100px)" }}
             >
-              <Image
+              <img
                 src={image}
                 alt={name}
                 width={300}
