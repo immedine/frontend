@@ -54,7 +54,7 @@ const ApiErrorMessage = {
 
   1500: 'Email or password Invalid',
   1501: 'Owner suspended',
-  1502: 'Owner email already exists',
+  1502: 'Owner email already exists. Please login with your email id to add manage restaurant.',
   1503: 'Owner has been deleted',
   1504: 'Owner blocked by admin',
   1506: 'Owner already exists for this role',

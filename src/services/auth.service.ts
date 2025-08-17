@@ -6,6 +6,7 @@ import {
   FORGOT_PASSWORD_API,
   RESET_PASSWORD_API,
   VERIFY_TOKEN_API,
+  VERIFY_REGISTRATION_TOKEN_API,
   REGISTER_API
 } from '@/lib/axios/apis';
 import Cookies from 'js-cookie';
@@ -31,6 +32,11 @@ export const authService = {
   login: async (credentials: LoginCredentials, userType: string) => {
     const response = await axiosInstance.post(`${api}/${userType}${LOGIN_API}`, credentials);
     if (response.data) {
+      if (response.data.data.user.accountStatus === 4) {
+        toast.error('Please verify your account to continue!');
+
+        return false;
+      }
       Cookies.set(AUTH_TOKEN, JSON.stringify({
         accessToken: response.data.data.accessToken,
         user: {
@@ -57,7 +63,7 @@ export const authService = {
   register: async (credentials: any, userType: string) => {
     const response = await axiosInstance.post(`${api}/${userType}${REGISTER_API}`, credentials);
     if (response.data) {   
-      toast.success('Registration successful');
+      toast.success('A verification link has been sent to your registered email address.');
       return true;
     } else {
       return false;
@@ -71,7 +77,16 @@ export const authService = {
   },
 
   verifyToken: async (data: string, userType: string = 'restaurant-owner') => {
-    const res = await axiosInstance.get(`${api}/${userType}${VERIFY_TOKEN_API}?token=${data}`);
+    const res = await axiosInstance.post(`${api}/${userType}${VERIFY_TOKEN_API}`, {
+      token: data
+    });
+    return res;
+  },
+
+  verifyRegistrationToken: async (data: string, userType: string = 'restaurant-owner') => {
+    const res = await axiosInstance.post(`${api}/${userType}${VERIFY_REGISTRATION_TOKEN_API}`, {
+      token: data
+    });
     return res;
   },
 
