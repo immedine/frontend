@@ -18,6 +18,8 @@ const ApiErrorMessage = {
   1004: 'Social ID not found. Please check your account.',
   1005: 'Access token has expired. Please log in again.',
   1006: 'Refresh token has expired. Please log in again.',
+  1007: 'Invalid token. Please request again',
+  1008: 'Token expired. Please request again',
 
   // ADMIN
   1100: 'Admin not found.',

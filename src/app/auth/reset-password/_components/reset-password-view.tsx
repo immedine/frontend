@@ -12,7 +12,7 @@ export default function ResetPasswordView() {
   return (
     <AuthLayout
       title="Reset Password"
-      description="Enter the OTP sent to your email and your new password"
+      description=""
       backButtonLabel="Back to Sign In"
       backButtonHref={`${getPathName(pathname, true)}/auth/sign-in`}
     >

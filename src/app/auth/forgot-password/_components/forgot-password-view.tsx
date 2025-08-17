@@ -42,11 +42,11 @@ export default function ForgotPasswordView() {
 
   const onSubmit =  async (values: FormValues) => {
     setPending(true);
-    const res = await authService.requestPasswordReset(values, getPathName(pathname));
+    await authService.requestPasswordReset(values, getPathName(pathname));
     setPending(false);
-    if (res) {
-      router.push(`${getPathName(pathname, true)}/auth/reset-password?email=${values.email}`);
-    }
+    // if (res) {
+    //   router.push(`${getPathName(pathname, true)}/auth/reset-password?email=${values.email}`);
+    // }
   }
 
   return (
@@ -81,7 +81,7 @@ export default function ForgotPasswordView() {
             {isPending && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Send OTP
+            Send Verification Link
           </Button>
         </form>
       </Form>

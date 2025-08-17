@@ -20,11 +20,10 @@ import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import { getPathName } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const formSchema = z
   .object({
-    email: z.string().email('Invalid email address'),
-    otp: z.string().min(4, 'OTP must be at least 4 characters'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirmPassword: z.string()
   })
@@ -39,7 +38,7 @@ export default function ResetPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const searchParams = useSearchParams();
-  const email = searchParams.get('email') || '';
+  const token = searchParams.get('token') || '';
   // const { mutate: resetPassword, isPending } = useResetPassword();
   const router = useRouter();
   const [isPending, setPending] = useState(false);
@@ -48,8 +47,6 @@ export default function ResetPasswordForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email,
-      otp: '',
       password: '',
       confirmPassword: ''
     }
@@ -58,11 +55,12 @@ export default function ResetPasswordForm() {
   const onSubmit = async (values: FormValues) => {
     setPending(true);
     const res = await authService.resetPassword({
-      email: values.email,
-      otp: values.otp,
+      token,
       password: values.password
     }, getPathName(pathname));
-    if (res) {
+    if (res.data.success) {
+      toast.success('Password reset successful');
+
       router.push(`${getPathName(pathname, true)}/auth/sign-in`);
     }
   }
@@ -70,42 +68,6 @@ export default function ResetPasswordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <Label htmlFor="email">Email</Label>
-              <FormControl>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  disabled={true}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="otp"
-          render={({ field }) => (
-            <FormItem>
-              <Label htmlFor="otp">OTP</Label>
-              <FormControl>
-                <Input
-                  id="otp"
-                  placeholder="Enter OTP from your email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="password"

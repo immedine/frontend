@@ -5,6 +5,7 @@ import {
   LOGIN_API,
   FORGOT_PASSWORD_API,
   RESET_PASSWORD_API,
+  VERIFY_TOKEN_API,
   REGISTER_API
 } from '@/lib/axios/apis';
 import Cookies from 'js-cookie';
@@ -65,13 +66,17 @@ export const authService = {
 
   requestPasswordReset: async (data: ForgotPasswordData, userType: string) => {
     await axiosInstance.post(`${api}/${userType}${FORGOT_PASSWORD_API}`, data);
-    toast.success('OTP sent to your email');
+    toast.success('A verification link has been sent to your email');
     return true;
   },
 
+  verifyToken: async (data: string, userType: string = 'restaurant-owner') => {
+    const res = await axiosInstance.get(`${api}/${userType}${VERIFY_TOKEN_API}?token=${data}`);
+    return res;
+  },
+
   resetPassword: async (data: ResetPasswordData, userType: string) => {
-    await axiosInstance.post(`${api}/${userType}${RESET_PASSWORD_API}`, data);
-    toast.success('Password reset successful');
-    return true;
+    const res = await axiosInstance.post(`${api}/${userType}${RESET_PASSWORD_API}`, data);
+    return res;
   }
 };
