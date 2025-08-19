@@ -3,6 +3,7 @@ import api from '../lib/axios/api.util';
 import axiosInstance from '@/lib/axios/axios.interceptor';
 import {
   LOGIN_API,
+  SOCIAL_LOGIN_API,
   FORGOT_PASSWORD_API,
   RESET_PASSWORD_API,
   VERIFY_TOKEN_API,
@@ -31,6 +32,37 @@ interface ResetPasswordData {
 export const authService = {
   login: async (credentials: LoginCredentials, userType: string) => {
     const response = await axiosInstance.post(`${api}/${userType}${LOGIN_API}`, credentials);
+    if (response.data) {
+      if (response.data.data.user.accountStatus === 4) {
+        toast.error('Please verify your account to continue!');
+
+        return false;
+      }
+      Cookies.set(AUTH_TOKEN, JSON.stringify({
+        accessToken: response.data.data.accessToken,
+        user: {
+          personalInfo: response.data.data.user.personalInfo,
+          _id: response.data.data.user._id,
+          restaurantId: response.data.data.user.restaurantRef
+        }
+      }));
+      if (response.data.data?.user?.roleInfo && Object.keys(response.data.data?.user?.roleInfo).length) {
+        let access = "superAdmin";
+        if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
+          access = response.data.data?.user?.roleInfo?.roleId.permissions.map((each: any) => each.moduleKey).join(",");
+        }
+        Cookies.set(USER_ACCESS, JSON.stringify(access));
+      }
+      
+      toast.success('Login successful');
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  socialLogin: async (credentials: LoginCredentials, userType: string = 'restaurant-owner') => {
+    const response = await axiosInstance.post(`${api}/${userType}${SOCIAL_LOGIN_API}`, credentials);
     if (response.data) {
       if (response.data.data.user.accountStatus === 4) {
         toast.error('Please verify your account to continue!');

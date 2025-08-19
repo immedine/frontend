@@ -21,6 +21,7 @@ import Cookies from 'js-cookie';
 import { AUTH_TOKEN } from '@/config/cookie-keys';
 import { toast } from 'sonner';
 import { getPathName } from '@/lib/utils';
+import { signOut } from 'next-auth/react';
 
 export function UserNav() {
   const pathname = usePathname();
@@ -41,14 +42,17 @@ export function UserNav() {
   };
 
   const handleLogout = async () => {
-    const res = await profileService.logout(getPathName(pathname));
-    if (res.data) {
-      Cookies.remove(AUTH_TOKEN);
-      // Show success message
-      toast.success('Logged out successfully');
-      // Redirect to login
-      router.push('/auth/sign-in');
-    }
+    signOut({ redirect: false });
+    setTimeout(async () => {
+      const res = await profileService.logout(getPathName(pathname));
+      if (res.data) {
+        Cookies.remove(AUTH_TOKEN);
+        // Show success message
+        toast.success('Logged out successfully');
+        // Redirect to login
+        router.push('/auth/sign-in');
+      }
+    }, 1000);
   };
 
   return (
@@ -77,7 +81,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href={`${getPathName(pathname,true)}/profile`}>
+          <Link href={`${getPathName(pathname, true)}/profile`}>
             <DropdownMenuItem>
               Profile
               {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}

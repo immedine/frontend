@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthLayout from '../../_components/auth-layout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { signIn, useSession } from "next-auth/react";
+
 import * as z from 'zod';
 import {
   Form,
@@ -21,6 +23,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
 import { getPathName } from '@/lib/utils';
+import Cookies from 'js-cookie';
+import Image from 'next/image';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -30,11 +34,14 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function SignInView() {
+  const { data } = useSession();
+
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   // const { mutate: login, isPending } = useLogin();
   const [isPending, setPending] = useState(false);
   const pathname = usePathname();
+  let socialLoginCalled = false;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -43,6 +50,29 @@ export default function SignInView() {
       password: ''
     }
   });
+
+  // console.log('data', data);
+
+  const callSocialLogin = async () => {
+    const res = await authService.socialLogin({
+      "email": data?.user?.email,
+      "socialId": data?.user?.id,
+      "provider": Cookies.get('loginType'),
+      "fullName": data?.user?.name,
+    });
+    if (res) {
+      Cookies.remove('loginType');
+      router.push(`${getPathName(pathname, true)}/dashboard`);
+    }
+  }
+
+  useEffect(() => {
+    if (data?.user && data?.user?.email && !socialLoginCalled && Cookies.get('loginType')) {
+      socialLoginCalled = true;
+      callSocialLogin();
+    }
+  }, [data]);
+
 
   const onSubmit = async (values: FormValues) => {
     setPending(true);
@@ -122,6 +152,19 @@ export default function SignInView() {
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Sign In
+          </Button>
+          <Button className="w-full bg-white text-black hover:bg-white" type="button" disabled={isPending} onClick={() => {
+            Cookies.set('loginType', 'google');
+            signIn("google")
+          }}>
+
+            <Image
+              alt="Google Icon"
+              src="/assets/google_icon.svg"
+              width={20}
+              height={20}
+              className='mr-2'
+            /> Sign In with Google
           </Button>
           <div className="flex justify-between text-sm">
             <Link

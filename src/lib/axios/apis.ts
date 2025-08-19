@@ -1,5 +1,6 @@
 // AUTH APIS
 export const LOGIN_API = `/auth/login`;
+export const SOCIAL_LOGIN_API = `/auth/social-login`;
 export const REGISTER_API = `/auth/signup`;
 export const FORGOT_PASSWORD_API = `/auth/forgot-password/request-otp`;
 export const VERIFY_TOKEN_API = `/auth/verify-token`;
