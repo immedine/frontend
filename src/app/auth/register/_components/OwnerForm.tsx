@@ -53,16 +53,18 @@ export default function OwnerForm({
   };
 
   const handleSubmit = async (e) => {
+    const reqFields = {
+      email: true,
+      phoneNumber: true,
+    };
+
+    if (!ownerData?.socialId) {
+      reqFields.password = true;
+      reqFields.confirmPassword = true;
+    }
     e.preventDefault();
     if (!isValid({
-      requiredFields: {
-        // firstName: true,
-        // lastName: true,
-        email: true,
-        phoneNumber: true,
-        password: true,
-        confirmPassword: true
-      },
+      requiredFields: reqFields,
       formError,
       formDetails: formData,
       updateError: setFormError
@@ -136,6 +138,7 @@ export default function OwnerForm({
             value={formData.email}
             onChange={handleChange}
             placeholder='Enter email address'
+            disabled={ownerData?.socialId}
             className={`w-full border rounded px-3 py-2
               ${formError.email ? 'border-red-500' : 'border-gray-300'}
               
@@ -166,6 +169,8 @@ export default function OwnerForm({
           {formError.phoneNumber && <p className='text-red-500 text-sm mt-1'>{formError.phoneNumber}</p>}
         </div>
       </div>
+      {!ownerData?.socialId ?
+      <>
       <div>
         <div>
           <label className="block mb-1 font-medium">Enter Password</label>
@@ -200,6 +205,7 @@ export default function OwnerForm({
           {formError.confirmPassword && <p className='text-red-500 text-sm mt-1'>{formError.confirmPassword}</p>}
         </div>
       </div>
+      </> : null}
 
       <>
         <Button className="w-full" type="submit">

@@ -58,6 +58,7 @@ const ApiErrorMessage = {
   1503: 'Owner has been deleted',
   1504: 'Owner blocked by admin',
   1506: 'Owner already exists for this role',
+  1507: 'You are registered using social account. Please use the same to login.',
 
   1550: 'Restaurant already exists',
 

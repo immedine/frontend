@@ -64,6 +64,10 @@ export const authService = {
   socialLogin: async (credentials: LoginCredentials, userType: string = 'restaurant-owner') => {
     const response = await axiosInstance.post(`${api}/${userType}${SOCIAL_LOGIN_API}`, credentials);
     if (response.data) {
+      console.log("response.data ", response.data)
+      if (response.data.data.message === "NEW_REGISTER") {
+        return response.data.data.message;
+      }
       if (response.data.data.user.accountStatus === 4) {
         toast.error('Please verify your account to continue!');
 
@@ -95,7 +99,7 @@ export const authService = {
   register: async (credentials: any, userType: string) => {
     const response = await axiosInstance.post(`${api}/${userType}${REGISTER_API}`, credentials);
     if (response.data) {   
-      toast.success('A verification link has been sent to your registered email address.');
+      !credentials.socialId && toast.success('A verification link has been sent to your registered email address.');
       return true;
     } else {
       return false;

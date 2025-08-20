@@ -25,6 +25,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { getPathName } from '@/lib/utils';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
+import { REGISTRATION_DATA } from '@/config/cookie-keys';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -54,15 +55,19 @@ export default function SignInView() {
   // console.log('data', data);
 
   const callSocialLogin = async () => {
-    const res = await authService.socialLogin({
+    const reqBody = {
       "email": data?.user?.email,
       "socialId": data?.user?.id,
       "provider": Cookies.get('loginType'),
       "fullName": data?.user?.name,
-    });
-    if (res) {
+    };
+    const res = await authService.socialLogin(reqBody);
+    if (res && res !== "NEW_REGISTER") {
       Cookies.remove('loginType');
       router.push(`${getPathName(pathname, true)}/dashboard`);
+    } else {
+      sessionStorage.setItem(REGISTRATION_DATA, JSON.stringify(reqBody));
+      router.push(`${getPathName(pathname, true)}/auth/register`);
     }
   }
 
