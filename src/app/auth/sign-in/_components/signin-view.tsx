@@ -41,6 +41,7 @@ export default function SignInView() {
   const [showPassword, setShowPassword] = useState(false);
   // const { mutate: login, isPending } = useLogin();
   const [isPending, setPending] = useState(false);
+  const [displayVerifyEmail, setVerifyEmail] = useState(false);
   const pathname = usePathname();
   let socialLoginCalled = false;
 
@@ -80,19 +81,30 @@ export default function SignInView() {
 
 
   const onSubmit = async (values: FormValues) => {
-    setPending(true);
-    const res = await authService.login(values, getPathName(pathname));
-    setPending(false);
-    if (res) {
-      router.push(`${getPathName(pathname, true)}/dashboard`);
+    if (displayVerifyEmail) {
+      const res = await authService.sendVerificationLink(values.email, getPathName(pathname));
+      if (res) {
+        setVerifyEmail(false);
+      }
+    } else {
+      setPending(true);
+      const res = await authService.login(values, getPathName(pathname));
+      setPending(false);
+      if (res && res !== "NOT_VERIFIED") {
+        router.push(`${getPathName(pathname, true)}/dashboard`);
+      } else {
+        setVerifyEmail(true);
+      }
     }
-  }
+    
+  };
 
   return (
     <AuthLayout
-      title="Sign In"
-      description="Enter your email below to sign in to your account"
+      title={!displayVerifyEmail ? "Sign In" : "Verify Account"}
+      description={`Enter your email below to ${!displayVerifyEmail ? "sign in to" : "verify"} your account`}
     >
+      {!displayVerifyEmail?
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -186,7 +198,40 @@ export default function SignInView() {
             </Link>
           </div>
         </form>
-      </Form>
+      </Form> : <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <Label htmlFor="email">Email</Label>
+                <FormControl>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="name@example.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="w-full" type="submit">
+            Send Verification Link
+          </Button>
+          <div className="flex justify-between text-sm">
+            <Link
+              href={`${getPathName(pathname, true)}/auth/sign-in`}
+              className="text-muted-foreground underline-offset-4 hover:underline"
+              onClick={() => setVerifyEmail(false)}
+            >
+              Back to Login
+            </Link>
+          </div>
+        </form>
+      </Form>}
     </AuthLayout>
   );
 }
