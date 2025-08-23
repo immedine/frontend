@@ -19,7 +19,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail
 } from '@/components/ui/sidebar';
-import { navItems } from '@/constants/data';
+import { adminNavItems, navItems } from '@/constants/data';
 import {
   ChevronRight,
   GalleryVerticalEnd,
@@ -62,7 +62,7 @@ export default function AppSidebar() {
     const localArr = JSON.parse(JSON.stringify(navItems));
     let arr = [];
     if (permissions.includes('superAdmin')) {
-      arr = localArr;
+      arr = JSON.parse(JSON.stringify(adminNavItems));
     } else {
       localArr.forEach((each) => {
         if (!each.items.length) {

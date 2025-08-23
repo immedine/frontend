@@ -7,8 +7,8 @@ export default function ControlledDialog({isOpen, setIsOpen, heading, children})
     <>
       <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40" />
-          <Dialog.Content className="fixed top-1/2 left-1/2 w-80 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow">
+          <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-40 z-10" />
+          <Dialog.Content className={`fixed top-1/2 left-1/2 w-80 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow w-full sm:w-[450px] z-10`}>
             <Dialog.Title className="text-lg font-bold flex justify-between item-center">{heading}
               <Dialog.Close asChild>
                 <button

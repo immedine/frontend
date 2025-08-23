@@ -19,3 +19,9 @@ export const LangCodes = {
 
 export const defaultImage = "/default-food.jpg";
 export const primaryColor = "#b7411f";
+
+export const RestaurantStatus = {
+  1: "Active",
+  2: "Deleted",
+  3: "Unpublished"
+};

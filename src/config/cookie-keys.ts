@@ -4,4 +4,4 @@ export const USER_ACCESS = 'immedine_restaurant_owner_access_modules';
 export const PROFILE_DATA = 'immedine_restaurant_owner_profile_data';
 export const PRIMARY_COLOR = 'immedine_diner_primary_color';
 export const SECONDARY_COLOR = 'immedine_diner_secondary_color';
-export const REGISTRATION_DATA = 'immedine_restaurant_owner_social_login_data'
+export const REGISTRATION_DATA = 'immedine_restaurant_owner_social_login_data';

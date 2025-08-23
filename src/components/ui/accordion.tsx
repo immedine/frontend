@@ -46,9 +46,14 @@ export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openI
                   </>
                 {item.content === "MenuDetails" ? <div className='text-medium'>Price: ₹{item.price}</div> : null}
               </span>
-              {item.content !== "MenuDetails" ?
+              {item.content === "Menu" ?
                 <ChevronDownIcon className="transition-transform duration-300 AccordionChevron" /> :
-                  <div>
+                item.content === "Restaurant" ? 
+                <div>
+                  {item.subText}
+                </div>
+                :
+                <div>
                     <div className='mb-2 flex items-center justify-end'>
                       <Badge
                         text={item.isVeg ? "Veg" : "Non Veg"}

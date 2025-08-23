@@ -266,3 +266,88 @@ export const navItems: NavItem[] = [
   //   items: [] // No child items
   // }
 ];
+
+export const adminNavItems: NavItem[] = [
+  {
+    title: 'Dashboard',
+    url: '/dashboard',
+    key: 'dashboard',
+    icon: 'dashboard',
+    isActive: true,
+    items: [] // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: 'Restaurant',
+    url: '/restaurant',
+    key: 'restaurant',
+    icon: 'restaurant',
+  },
+  // {
+  //   title: 'Settings',
+  //   url: '/dashboard/settings',
+  //   icon: 'settings',
+  //   shortcut: ['s', 't'],
+  //   isActive: false,
+  //   items: [
+  //     {
+  //       title: 'Role',
+  //       url: '/dashboard/settings/role',
+  //       icon: 'role',
+  //       key: 'role',
+  //       shortcut: ['s', 'r']
+  //     },
+  //     {
+  //       title: 'Sub Admin',
+  //       url: '/dashboard/settings/sub-admin',
+  //       icon: 'admin',
+  //       key: 'subAdmin',
+  //       shortcut: ['s', 'a']
+  //     },
+  //     {
+  //       title: 'Language',
+  //       url: '/dashboard/settings/language',
+  //       key: 'language',
+  //       icon: 'language',
+  //       shortcut: ['s', 'l']
+  //     },
+  //     {
+  //       title: 'Category',
+  //       url: '/dashboard/settings/category',
+  //       key: 'category',
+  //       icon: 'category',
+  //       shortcut: ['s', 'c']
+  //     },
+  //     {
+  //       title: 'FAQ',
+  //       url: '/dashboard/settings/faq',
+  //       key: 'faq',
+  //       icon: 'faq',
+  //       shortcut: ['s', 'f']
+  //     },
+  //     {
+  //       title: 'Global Config',
+  //       url: '/dashboard/settings/config',
+  //       key: 'globalConfig',
+  //       icon: 'config',
+  //       shortcut: ['s', 'g']
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: 'Notifications',
+  //   url: '/dashboard/notifications',
+  //   icon: 'notification',
+  //   key: 'notification',
+  //   shortcut: ['n', 't'],
+  //   isActive: false,
+  //   items: [] // No child items
+  // }
+  // {
+  //   title: 'Employee',
+  //   url: '/dashboard/employee',
+  //   icon: 'user',
+  //   shortcut: ['e', 'e'],
+  //   isActive: false,
+  //   items: []
+  // },
+];

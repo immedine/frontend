@@ -80,6 +80,8 @@ export const getPathName = (path: string, isRoute?: boolean) => {
   const userType = path.split('/')[1];
   if (userType === 'diner') {
     return !isRoute ? 'user' : '/diner';
+  } else if (userType === 'admin') {
+    return !isRoute ? 'admin' : '/admin';
   } else {
     return isRoute ? '' : 'restaurant-owner';
   }

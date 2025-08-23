@@ -8,6 +8,7 @@ import ControlledDialog from "./dialog";
 import { useState } from "react";
 import { getPathName } from "@/lib/utils";
 import CategoryForm from "@/app/category/_components/category-form";
+import RestaurantForm from "@/app/admin/restaurant/_components/RestaurantForm";
 
 interface HeaderWithButtonProps {
   title: string;
@@ -58,6 +59,13 @@ const HeaderWithButton = ({
       setIsOpen={setIsOpen}
       >
         <CategoryForm categoryId="new" setAdded={setAdded} />
+      </ControlledDialog> : formType === "Restaurant" ?
+    <ControlledDialog 
+      heading="Create Restaurant"
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      >
+        <RestaurantForm setAdded={setAdded} fromAdmin={true} />
       </ControlledDialog> : null}
   </>
 };
