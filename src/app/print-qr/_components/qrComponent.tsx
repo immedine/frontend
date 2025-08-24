@@ -4,13 +4,16 @@ import QRCode from "qrcode";
 import PrintView from "./PreviewPrint";
 import Cookies from "js-cookie";
 import { AUTH_TOKEN } from "@/config/cookie-keys";
+import { useSearchParams } from "next/navigation";
 
-export default function QRCodeForm() {
+export default function QRCodeForm({fromAdmin}) {
   const [header, setHeader] = useState("");
   const [description, setDescription] = useState("");
   const [qrImage, setQrImage] = useState("");
   const [preview, setPreview] = useState(false)
   const authData = Cookies.get(AUTH_TOKEN);
+  const searchParams = useSearchParams();
+  const restaurantId = searchParams.get("restaurantId");
 
   const generateQRCode = async (restId: string) => {
     try {
@@ -22,8 +25,14 @@ export default function QRCodeForm() {
   };
 
   useEffect(() => {
-    authData && generateQRCode(JSON.parse(authData).user.restaurantId);
+    !fromAdmin && authData && generateQRCode(JSON.parse(authData).user.restaurantId);
   }, [authData]);
+
+  useEffect(() => {
+    if (fromAdmin && restaurantId) {
+      generateQRCode(restaurantId);
+    }
+  }, [fromAdmin]);
 
   return (
     !preview ? <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">

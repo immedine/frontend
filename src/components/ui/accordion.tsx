@@ -9,8 +9,10 @@ import MenuItem from './MenuComponent/MenuItem';
 import { Switch } from './switch';
 import { Badge } from './badge';
 import CustomAlertDialog from './alert-dialog';
+import RestaurantItem from '@/app/admin/restaurant/_components/RestaurantItem';
+import RestaurantOwnerItem from '@/app/admin/restaurant/_components/RestaurantOwnerItem';
 
-export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openItem, openMenuItem, setOpenMenuItem, toggleAvailability, fetchMenu, selectedCategory }) {
+export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openItem, openMenuItem, setOpenMenuItem, toggleAvailability, fetchMenu, selectedCategory, onEditOwner }) {
 
   const [openDeleteConfirmation, setDeleteConfirmation] = useState(false);
   const [itemToBeDeleted, setItemToBeDeleted] = useState("");
@@ -50,7 +52,12 @@ export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openI
                 <ChevronDownIcon className="transition-transform duration-300 AccordionChevron" /> :
                 item.content === "Restaurant" ? 
                 <div>
-                  {item.subText}
+
+                  <button onClick={e => {
+                    e.stopPropagation();
+                    window.open(`${window.location.origin}/admin/print-qr?restaurantId=${item.id}`)
+                  }}>Print QR code</button>
+                  {/* <div></div> */}
                 </div>
                 :
                 <div>
@@ -128,7 +135,23 @@ export default function MyAccordion({ items, onEdit, onDelete, chooseItem, openI
                 />
 
               </div>
-              : item.content
+              : item.content === "Restaurant" ?
+              <div>
+                {!item.ownerList?.length ?
+                  null :
+                  <RestaurantOwnerItem
+                    openItem={openMenuItem}
+                    items={item.ownerList}
+                    onEdit={onEditOwner}
+                    // onEdit={onEdit}
+                    // onDelete={deleteMenu}
+                    // chooseMenu={(item: any) => setOpenMenuItem(item.id)}
+                    // fetchMenu={fetchMenu}
+                    // selectedCategory={selectedCategory}
+                  />
+                }
+              </div> :
+              item.content
             }
           </Accordion.Content>
         </Accordion.Item>

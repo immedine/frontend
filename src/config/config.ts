@@ -25,3 +25,8 @@ export const RestaurantStatus = {
   2: "Deleted",
   3: "Unpublished"
 };
+
+export const RestaurantOwnerStatus = {
+  1: "Active",
+  2: "Deleted"
+};

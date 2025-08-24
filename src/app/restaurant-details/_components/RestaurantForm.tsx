@@ -14,7 +14,10 @@ import { toast } from 'sonner';
 export default function RestaurantForm({
   isRegister,
   onsubmit,
-  restaurantData
+  restaurantData,
+  fromAdmin,
+  setAdded,
+  restaurantId
 }) {
   const pathname = usePathname();
   const fileInputRef = useRef(null);
@@ -64,7 +67,40 @@ export default function RestaurantForm({
       return;
     }
 
-    if (!isRegister) {
+    if (isRegister) {
+      onsubmit({
+        name: formData.name,
+        introductoryText: formData.intro
+      });
+    } else if (fromAdmin) {
+      let logoUrl = formData.logo;
+      if (formData.logo && formData.logo instanceof File) {
+        const res = await uploadService.uploadImage(formData.logo, getPathName(pathname));
+        logoUrl = res.data;
+      }
+
+
+      // return;
+      const reqBody = {
+        name: formData.name,
+        introductoryText: formData.intro,
+        primaryColor: formData.primaryColor || "",
+        secondaryColor: formData.secondaryColor || ""
+      }
+      if (formData.logo) {
+        reqBody.logo = logoUrl;
+      }
+      let res;
+      if (!restaurantId) {
+        res = await restaurantService.addRestaurantFromAdmin(reqBody, getPathName(pathname));
+      } else {
+        res = await restaurantService.updateRestaurantFromAdmin(restaurantId, reqBody, getPathName(pathname));
+      }
+      if (res) {
+        !restaurantId ? toast.success('Restaurant details added successfully!') : toast.success('Restaurant details updated successfully!');
+        setAdded();
+      }
+    } else {
       let logoUrl = formData.logo;
       if (formData.logo && formData.logo instanceof File) {
         const res = await uploadService.uploadImage(formData.logo, getPathName(pathname));
@@ -86,12 +122,7 @@ export default function RestaurantForm({
       if (res) {
         toast.success('Restaurant details updated successfully!');
       }
-    } else {
-      onsubmit({
-        name: formData.name,
-        introductoryText: formData.intro
-      });
-    }
+    } 
 
   };
 
@@ -109,8 +140,27 @@ export default function RestaurantForm({
   };
 
   useEffect(() => {
-    !isRegister && fetchRestaurantDetails();
+    !isRegister && !fromAdmin && fetchRestaurantDetails();
   }, []);
+
+  const fetchCategoryDetails = async () => {
+      const res = await restaurantService.getRestaurantFromAdmin(restaurantId, getPathName(pathname));
+      if (res.data && Object.keys(res.data)) {
+        setFormData({
+          name: res.data.name,
+          logo: res.data.logo,
+          intro: res.data.introductoryText,
+          primaryColor: res.data.primaryColor,
+          secondaryColor: res.data.secondaryColor,
+        });
+      }
+    };
+  
+    useEffect(() => {
+      if (restaurantId) {
+        fetchCategoryDetails();
+      }
+    }, [restaurantId]);
 
   const openFileDialog = () => {
     fileInputRef?.current?.click();

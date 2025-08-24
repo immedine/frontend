@@ -8,17 +8,23 @@ import { Separator } from '@/components/ui/separator';
 import { cn, getPathName } from '@/lib/utils';
 import { restaurantService } from '@/services/restaurant.service';
 import RestaurantItem from './RestaurantItem';
-import RestaurantForm from './RestaurantForm';
+// import RestaurantForm from './RestaurantForm';
 import { toast } from 'sonner';
+import RestaurantForm from '@/app/restaurant-details/_components/RestaurantForm';
+import { restaurantOwnerService } from '@/services/restaurant-owner.service';
+import OwnerForm from '@/app/auth/register/_components/OwnerForm';
 
 export default function RestaurantListingPage() {
   const pathname = usePathname();
   const [restaurants, setRestaurants] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
   const [editableRestaurantId, setEditableRestaurantId] = useState("");
+  const [editableOwner, setEditableOwner] = useState({});
   const [selectedRestaurant, selectRestaurant] = useState("");
   const [openItem, setOpenItem] = useState("");
-  const [openMenuItem, setOpenMenuItem] = useState("");
+  const [ownerList, setOwnerList] = useState([]);
+
 
   const fetchRestaurants = async () => {
     const res = await restaurantService.getRestaurants({
@@ -33,7 +39,8 @@ export default function RestaurantListingPage() {
 
   useEffect(() => {
     if (selectedRestaurant) {
-      setOpenItem(selectedRestaurant);
+      // setOpenItem(selectedRestaurant);
+      fetchOwners();
     }
   }, [selectedRestaurant]);
 
@@ -60,8 +67,47 @@ export default function RestaurantListingPage() {
     fetchRestaurants();
   }
 
+  const setUpdated2 = () => {
+    setIsOpen2(false);
+    setEditableOwnerId("");
+    fetchOwners();
+  }
+
+  const fetchOwners = async () => {
+    const res = await restaurantOwnerService.getRestaurantOwners({
+      filters: {
+        restaurantRef: selectedRestaurant
+      }
+    }, getPathName(pathname));
+
+    setOpenItem(selectedRestaurant);
+    // setOpenMenuItem("");
+
+    if (res.data && res.data.data) {
+      setOwnerList(res.data.data);
+    }
+  };
+
+  const editOwner = (id: string) => {
+    const item = ownerList.filter(each => each._id === id)[0];
+    setEditableOwner({
+      email: item.personalInfo.email,
+      phoneNumber: item.personalInfo.phone?.number || "",
+      fullName: item.personalInfo.fullName,
+      restaurantRef: item.restaurantRef
+    });
+    setIsOpen2(true);
+  };
+
   return (
     <>
+      <ControlledDialog
+      heading="Update Owner"
+      isOpen={isOpen2}
+      setIsOpen={setIsOpen2}
+    >
+      {restaurants?.length ? <OwnerForm ownerData={editableOwner} fromAdmin={true} setAdded={setUpdated2} restaurants={restaurants} /> : <div>Please add a restaurant</div>}
+    </ControlledDialog>
       <ControlledDialog
         heading="Update Category"
         isOpen={isOpen}
@@ -77,6 +123,9 @@ export default function RestaurantListingPage() {
           buttonClass={cn(buttonVariants(), 'text-xs md:text-sm')}
           buttonText='Add Restaurant'
           fetchData={fetchRestaurants}
+          button2Text='Add Owner'
+          fetchData2={() => {}}
+          restaurants={restaurants}
         />
       </div>
       <Separator className='my-4' />
@@ -85,9 +134,11 @@ export default function RestaurantListingPage() {
           openItem={openItem}
           items={restaurants}
           onEdit={editRestaurant}
+          onEditOwner={editOwner}
           onDelete={deleteRestaurant}
           chooseRestaurant={(item: any) => selectRestaurant(item.id)}
           selectedRestaurant={selectedRestaurant}
+          ownerList={ownerList}
         />
         : <div className="flex items-center justify-center p-4">No restaurants available!</div>}
     </>
