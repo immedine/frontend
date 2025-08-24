@@ -90,10 +90,9 @@ export default function SignInView() {
       setPending(true);
       const res = await authService.login(values, getPathName(pathname));
       setPending(false);
-      if (res && res !== "NOT_VERIFIED") {
-        router.push(`${getPathName(pathname, true)}/dashboard`);
-      } else {
-        setVerifyEmail(true);
+      if (res) {
+        res !== "NOT_VERIFIED" && router.push(`${getPathName(pathname, true)}/dashboard`);
+        res === "NOT_VERIFIED" && setVerifyEmail(true);
       }
     }
     

@@ -78,8 +78,7 @@ export default function RestaurantForm({
         const res = await uploadService.uploadImage(formData.logo, getPathName(pathname));
         logoUrl = res.data;
       }
-
-
+      
       // return;
       const reqBody = {
         name: formData.name,

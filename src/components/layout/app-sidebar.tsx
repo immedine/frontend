@@ -63,6 +63,8 @@ export default function AppSidebar() {
     let arr = [];
     if (permissions.includes('superAdmin')) {
       arr = JSON.parse(JSON.stringify(adminNavItems));
+    } else if (permissions.includes('RestOwner')) {
+      arr = JSON.parse(JSON.stringify(navItems));
     } else {
       localArr.forEach((each) => {
         if (!each.items.length) {

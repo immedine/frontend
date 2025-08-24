@@ -1,14 +1,17 @@
 "use client";
 
 import MyAccordion from "@/components/ui/accordion";
+import { AUTH_TOKEN } from "@/config/cookie-keys";
 import { getPathName } from "@/lib/utils";
 import { menuService } from "@/services/menu.service";
 import { uploadService } from "@/services/upload.service";
+import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) => {
-
+  const authData = Cookies.get(AUTH_TOKEN);
+  
   const [localItems, setLocalItems] = useState(items);
   const pathname = usePathname();
 
@@ -35,10 +38,16 @@ const MenuItem = ({ items, chooseMenu, openItem, fetchMenu, selectedCategory }) 
   }, [items]);
 
   const onEdit = async (data, images) => {
+
+    if (!authData) {
+      return;
+    }
+
     let imageUrls = [];
     const fileImages = images.filter(item => item instanceof File);
     if (fileImages && fileImages.length) {
-        const res = await uploadService.uploadImages(fileImages, getPathName(pathname));
+        const res = await uploadService.uploadImages(fileImages, getPathName(pathname),
+        `${JSON.parse(authData).user.restaurantId}/${data.id !== "-1" ? data.categoryRef : selectedCategory}`);
         if (res.data && res.data.length) {
           imageUrls = imageUrls.concat(res.data);
         }

@@ -48,10 +48,10 @@ export const authService = {
         }
       }));
       if (response.data.data?.user?.roleInfo && Object.keys(response.data.data?.user?.roleInfo).length) {
-        let access = "superAdmin";
-        if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
-          access = response.data.data?.user?.roleInfo?.roleId.permissions.map((each: any) => each.moduleKey).join(",");
-        }
+        let access = response.data.data?.user?.roleInfo?.isSuperRestaurantOwner ? "RestOwner" : "superAdmin";
+        // if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
+        //   access = response.data.data?.user?.roleInfo?.roleId.permissions.map((each: any) => each.moduleKey).join(",");
+        // }
         Cookies.set(USER_ACCESS, JSON.stringify(access));
       }
       
@@ -82,10 +82,10 @@ export const authService = {
         }
       }));
       if (response.data.data?.user?.roleInfo && Object.keys(response.data.data?.user?.roleInfo).length) {
-        let access = "superAdmin";
-        if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
-          access = response.data.data?.user?.roleInfo?.roleId.permissions.map((each: any) => each.moduleKey).join(",");
-        }
+        let access = response.data.data?.user?.roleInfo?.isSuperRestaurantOwner ? "RestOwner" : "superAdmin";
+        // if (response.data.data?.user?.roleInfo?.roleId && Object.keys(response.data.data?.user?.roleInfo?.roleId).length) {
+        //   access = response.data.data?.user?.roleInfo?.roleId.permissions.map((each: any) => each.moduleKey).join(",");
+        // }
         Cookies.set(USER_ACCESS, JSON.stringify(access));
       }
       

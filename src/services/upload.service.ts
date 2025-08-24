@@ -15,10 +15,13 @@ export const uploadService = {
     return response.data;
   },
 
-  uploadImages: async (file: File, userType: string) => {
+  uploadImages: async (file: File, userType: string, path?: any) => {
     const formData = new FormData();
     for (let i = 0; i < file.length; i++) {
       formData.append("image", file[i]); // name must match multer's field name
+    }
+    if (path) {
+      formData.append('path', path);
     }
     const response = await axiosInstance.post(`/account/${userType}${UPLOAD_API}/upload-multiple-images`, formData, {
       headers: {
