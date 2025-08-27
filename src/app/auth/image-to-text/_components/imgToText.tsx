@@ -15,7 +15,7 @@ export default function ImgToText() {
     await worker.loadLanguage("eng");
     await worker.initialize("eng");
     await worker.setParameters({
-      tessedit_char_whitelist: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+      // tessedit_char_whitelist: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .-"
     });
     const {data} = await worker.recognize(imageData);
     console.log("data ", data)

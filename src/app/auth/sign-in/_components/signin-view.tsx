@@ -26,6 +26,7 @@ import { getPathName } from '@/lib/utils';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { REGISTRATION_DATA } from '@/config/cookie-keys';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -68,6 +69,7 @@ export default function SignInView() {
       router.push(`${getPathName(pathname, true)}/dashboard`);
     } else {
       sessionStorage.setItem(REGISTRATION_DATA, JSON.stringify(reqBody));
+      toast.success('Account created. Please enter other details to continue');
       router.push(`${getPathName(pathname, true)}/auth/register`);
     }
   }

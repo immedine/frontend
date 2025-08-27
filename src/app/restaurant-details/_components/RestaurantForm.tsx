@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { getPathName, isValid } from '@/lib/utils';
 import { restaurantService } from '@/services/restaurant.service';
 import { uploadService } from '@/services/upload.service';
@@ -29,13 +30,15 @@ export default function RestaurantForm({
     intro: '',
     primaryColor: '#b7411f',
     secondaryColor: '#ffffff',
+    hideMenuDetails: false,
+    hideCardView: false
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value, files, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: files ? files[0] : type === 'checkbox' ? checked : value,
     }));
     setFormError((prev) => {
       return {
@@ -78,7 +81,7 @@ export default function RestaurantForm({
         const res = await uploadService.uploadImage(formData.logo, getPathName(pathname));
         logoUrl = res.data;
       }
-      
+
       // return;
       const reqBody = {
         name: formData.name,
@@ -112,7 +115,11 @@ export default function RestaurantForm({
         name: formData.name,
         introductoryText: formData.intro,
         primaryColor: formData.primaryColor || "",
-        secondaryColor: formData.secondaryColor || ""
+        secondaryColor: formData.secondaryColor || "",
+        config: {
+          hideCardView: formData.hideCardView,
+          hideMenuDetails: formData.hideMenuDetails
+        }
       }
       if (formData.logo) {
         reqBody.logo = logoUrl;
@@ -121,7 +128,7 @@ export default function RestaurantForm({
       if (res) {
         toast.success('Restaurant details updated successfully!');
       }
-    } 
+    }
 
   };
 
@@ -134,6 +141,8 @@ export default function RestaurantForm({
         intro: res.data.introductoryText,
         primaryColor: res.data.primaryColor,
         secondaryColor: res.data.secondaryColor,
+        hideMenuDetails: res.data.config.hideMenuDetails,
+        hideCardView: res.data.config.hideCardView,
       });
     }
   };
@@ -143,23 +152,25 @@ export default function RestaurantForm({
   }, []);
 
   const fetchCategoryDetails = async () => {
-      const res = await restaurantService.getRestaurantFromAdmin(restaurantId, getPathName(pathname));
-      if (res.data && Object.keys(res.data)) {
-        setFormData({
-          name: res.data.name,
-          logo: res.data.logo,
-          intro: res.data.introductoryText,
-          primaryColor: res.data.primaryColor,
-          secondaryColor: res.data.secondaryColor,
-        });
-      }
-    };
-  
-    useEffect(() => {
-      if (restaurantId) {
-        fetchCategoryDetails();
-      }
-    }, [restaurantId]);
+    const res = await restaurantService.getRestaurantFromAdmin(restaurantId, getPathName(pathname));
+    if (res.data && Object.keys(res.data)) {
+      setFormData({
+        name: res.data.name,
+        logo: res.data.logo,
+        intro: res.data.introductoryText,
+        primaryColor: res.data.primaryColor,
+        secondaryColor: res.data.secondaryColor,
+        hideMenuDetails: res.data.config.hideMenuDetails,
+        hideCardView: res.data.config.hideCardView,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (restaurantId) {
+      fetchCategoryDetails();
+    }
+  }, [restaurantId]);
 
   const openFileDialog = () => {
     fileInputRef?.current?.click();
@@ -172,11 +183,11 @@ export default function RestaurantForm({
     >
       <div className={`${!isRegister ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : ''}`}>
         <div>
-          <label className="block mb-1 font-medium">Name (Restaurant/ Cafe/ Bar etc.)</label>
+          <label className="block mb-1 font-medium">Name</label>
           <input
             type="text"
             name="name"
-            placeholder='Enter name'
+            placeholder='Restaurant/ Cafe/ Bar etc.'
             value={formData.name}
             onChange={handleChange}
             className={`w-full border rounded px-3 py-2
@@ -187,32 +198,64 @@ export default function RestaurantForm({
           {formError.name && <p className='text-red-500 text-sm mt-1'>{formError.name}</p>}
         </div>
         {!isRegister ?
-          <div>
-            <label className="block mb-1 font-medium">Logo</label>
-            <button
-              type='button'
-              onClick={openFileDialog}
-              className="w-[70px] h-[70px] flex items-center justify-center border border-dashed border-gray-400 rounded bg-gray-100 hover:bg-gray-200 text-2xl"
-            >
-              {formData.logo ? (
-                <img
-                  src={typeof formData.logo === 'string' ? formData.logo : URL.createObjectURL(formData.logo)}
-                  alt="Restaurant Logo"
-                  className="w-full h-full object-cover rounded"
-                />
-              ) : '+'}
-            </button>
+          <>
+            <div>
+              <label className="block mb-1 font-medium">Logo</label>
+              <button
+                type='button'
+                onClick={openFileDialog}
+                className="w-[70px] h-[70px] flex items-center justify-center border border-dashed border-gray-400 rounded bg-gray-100 hover:bg-gray-200 text-2xl"
+              >
+                {formData.logo ? (
+                  <img
+                    src={typeof formData.logo === 'string' ? formData.logo : URL.createObjectURL(formData.logo)}
+                    alt="Restaurant Logo"
+                    className="w-full h-full object-cover rounded"
+                  />
+                ) : '+'}
+              </button>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleChange}
-              ref={fileInputRef}
-              className="hidden"
-              name="logo"
-            />
-          </div> : null}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleChange}
+                ref={fileInputRef}
+                className="hidden"
+                name="logo"
+              />
+            </div>
+
+          </> : null}
       </div>
+      {!isRegister ?
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <div className="flex items-center justify-between">
+            <label className="font-medium mr-2">Hide Menu Details</label>
+            <Switch
+              checked={formData.hideMenuDetails}
+              onCheckedChange={() => handleChange({
+                target: {
+                  name: 'hideMenuDetails',
+                  checked: !formData.hideMenuDetails,
+                  type: 'checkbox'
+                }
+              })}
+            />
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <label className="font-medium mr-2">Hide Card View</label>
+            <Switch
+              checked={formData.hideCardView}
+              onCheckedChange={() => handleChange({
+                target: {
+                  name: 'hideCardView',
+                  checked: !formData.hideCardView,
+                  type: 'checkbox'
+                }
+              })}
+            />
+          </div>
+        </div> : null}
 
       <div>
         <label className="block mb-1 font-medium">Introduction</label>
@@ -220,7 +263,7 @@ export default function RestaurantForm({
           name="intro"
           value={formData.intro}
           onChange={handleChange}
-          placeholder='Enter introductory text'
+          placeholder='Write a tagline for your outlet'
           rows={3}
           className="w-full border border-gray-300 rounded px-3 py-2"
         ></textarea>

@@ -27,7 +27,8 @@ export default function OwnerForm({
     phoneNumber: '',
     fullName: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    restaurantRef: ''
   });
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function OwnerForm({
 
   useEffect(() => {
     if (restaurants && restaurants.length && ownerData && Object.keys(ownerData).length) {
-      console.log("ownerData ", ownerData)
+      // console.log("ownerData ", ownerData)
       setFormData({
         ...formData,
         restaurantRef: ownerData.restaurantRef ? ownerData.restaurantRef : restaurants[0]._id,
@@ -71,7 +72,6 @@ export default function OwnerForm({
   };
 
   const submitForm = async (data: any) => {
-
     const res = await restaurantOwnerService.addRestaurantOwnerFromAdmin({
       personalInfo: {
         fullName: data.fullName,
@@ -81,7 +81,7 @@ export default function OwnerForm({
           number: data.phoneNumber || ""
         }
       },
-      restaurantRef: data.restaurantRef
+      restaurantRef: data.restaurantRef ? data.restaurantRef : ownerData && ownerData.restaurantRef ? ownerData.restaurantRef : restaurants && restaurants.length ? restaurants[0]._id : ''
     }, getPathName(pathname));
     if (res) {
       toast.success("Owner added successfully!");
@@ -157,13 +157,13 @@ export default function OwnerForm({
             </select>
           </div>
           <div className='mt-2'>
-            <label className="block mb-1 font-medium">Contact Name</label>
+            <label className="block mb-1 font-medium">Name</label>
             <input
               type="text"
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              placeholder='Enter full name'
+              placeholder='Contact name'
               autoComplete='off'
               className={`w-full border rounded px-3 py-2
               ${formError.fullName ? 'border-red-500' : 'border-gray-300'}
@@ -176,13 +176,13 @@ export default function OwnerForm({
         </div> : null}
       <div>
         <div>
-          <label className="block mb-1 font-medium">Contact Email Address</label>
+          <label className="block mb-1 font-medium">Email</label>
           <input
             type="text"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder='Enter email address'
+            placeholder='Contact email address'
             disabled={ownerData?.socialId}
             autoComplete='off'
             className={`w-full border rounded px-3 py-2
@@ -195,10 +195,11 @@ export default function OwnerForm({
       </div>
       <div>
         <div>
-          <label className="block mb-1 font-medium">Contact Mobile Number</label>
+          <label className="block mb-1 font-medium">Mobile Number</label>
           <input
             type="text"
             name="phoneNumber"
+            autoComplete='off'
             value={formData.phoneNumber}
             onChange={e => {
               handleChange({
@@ -208,7 +209,7 @@ export default function OwnerForm({
                 }
               })
             }}
-            placeholder='Enter mobile number'
+            placeholder='Contact mobile number'
             className={`w-full border rounded px-3 py-2
               ${formError.phoneNumber ? 'border-red-500' : 'border-gray-300'}
               
@@ -221,13 +222,14 @@ export default function OwnerForm({
         <>
           <div>
             <div>
-              <label className="block mb-1 font-medium">Enter Password</label>
+              <label className="block mb-1 font-medium">Password</label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder='Enter password'
+                autoComplete='off'
                 className={`w-full border rounded px-3 py-2
               ${formError.password ? 'border-red-500' : 'border-gray-300'}
               
@@ -243,8 +245,8 @@ export default function OwnerForm({
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
-                placeholder='Confirm password'
                 onChange={handleChange}
+                autoComplete='off'
                 className={`w-full border rounded px-3 py-2
               ${formError.confirmPassword ? 'border-red-500' : 'border-gray-300'}
               

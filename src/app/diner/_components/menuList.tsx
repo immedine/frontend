@@ -29,11 +29,11 @@ export default function MenuList({ restaurantId }) {
   const [backupMenuData, setBackupMenuData] = useState([]);
   const [categories, setCategoryData] = useState([]);
   const [backupCategories, setBackupCategoryData] = useState([]);
-  const [displayMenu, toggleMenu] = useState(false);
+  // const [displayMenu, toggleMenu] = useState(false);
   const [displaySort, toggleSortDropdown] = useState(false);
   const [isCategoryDisplayed, toggleCategory] = useState(true);
   const [count, setCount] = useState(0);
-  const [isCardView, toggleView] = useState(true);
+  const [isCardView, toggleView] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
   const userData = useUserStore((state) => state.user);
@@ -296,13 +296,14 @@ export default function MenuList({ restaurantId }) {
                     checked={userData?.dark}
                     aria-label="Toggle dark/light mode"
                   />
-                  <div className="w-16 h-8 bg-gray-500 peer-focus:outline-none border rounded-full peer  transition-colors"></div>
+                  <div className="w-12 h-8 bg-gray-500 peer-focus:outline-none border rounded-full peer  transition-colors"></div>
                   <div className={`absolute left-${userData?.dark ? '3' : '1'} top-1 w-6 h-6 transition-transform peer-checked:translate-x-5`}>
                     {userData?.dark ?
                       <SunIcon /> :
                       <MoonIcon />}
                   </div>
                 </label>
+                {!userData?.restaurant?.config?.hideCardView ?
                 <div className={`rounded-full border bg-${!userData?.dark ? "[#2f2e33] text-white" : "white text-black"}`} style={{
                   padding: "5px 7px",
                 }}>
@@ -323,7 +324,7 @@ export default function MenuList({ restaurantId }) {
                     >
                       <ListIcon />
                     </button>}
-                </div>
+                </div> : null}
                 <button
                   className={`p-2 rounded-full border bg-${!userData?.dark ? "[#2f2e33]" : "white"} transition-colors`}
                   aria-label="Search"
@@ -357,7 +358,9 @@ export default function MenuList({ restaurantId }) {
 
 
 
-            <div id="scrollContainer" className={`scrollbar-hide relative bg-${!userData?.dark ? "[#0d0d0d]" : "white"} h-screen overflow-y-auto`}>
+            <div id="scrollContainer" className={`scrollbar-hide relative bg-${!userData?.dark ? "[#0d0d0d]" : "white"}  overflow-y-auto h-screen`} style={{
+              paddingBottom: userData?.isFilterOpen ? "180px" : "120px"
+            }}>
               {isCategoryDisplayed && menuData.length && categories?.length > 0 ?
                 categories.map((c) => (
                   c.totalMenu ? <section className="mt-4" id={c._id} key={c._id}>
@@ -374,7 +377,7 @@ export default function MenuList({ restaurantId }) {
                                 key={index}
                                 product={{ ...product, image: product?.images?.length ? product.images[0] : "" }}
                                 hideAddToCart={false}
-                                onClick={() => router.push(`/diner/details/${product._id}`)}
+                                onClick={!userData?.restaurant?.config?.hideMenuDetails ? () => router.push(`/diner/details/${product._id}`) : () => {}}
                               />
                             })
                           })}
@@ -384,7 +387,7 @@ export default function MenuList({ restaurantId }) {
                           ?.filter((item) => item?.categoryId === c._id)
                           .map((eachMenu) => {
                             return eachMenu.menus.map((product) => {
-                              return <MenuItem key={product._id} {...product} image={product?.images?.length ? product.images[0] : ""} onClick={() => router.push(`/diner/details/${product._id}`)} />
+                              return <MenuItem key={product._id} {...product} image={product?.images?.length ? product.images[0] : ""} onClick={!userData?.restaurant?.config?.hideMenuDetails ? () => router.push(`/diner/details/${product._id}`) : () => {}} />
                             })
                           })}
                       </div>}
@@ -400,7 +403,7 @@ export default function MenuList({ restaurantId }) {
                             key={index}
                             product={{ ...product, image: product?.images?.length ? product.images[0] : "" }}
                             hideAddToCart={false}
-                            onClick={() => router.push(`/diner/details/${product._id}`)}
+                            onClick={!userData?.restaurant?.config?.hideMenuDetails ? () => router.push(`/diner/details/${product._id}`) : () => {}}
                           />
                       })}
                   </div>

@@ -52,7 +52,7 @@ export default function AuthLayout({
             <h1 className="font-poppins text-2xl font-semibold tracking-tight">
               {title}
             </h1>
-            <p className="font-nunito text-sm text-muted-foreground">
+            <p className="font-nunito text-md text-muted-foreground">
               {description}
             </p>
           </div>

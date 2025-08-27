@@ -59,8 +59,8 @@ export default function Register() {
 
   return (
     <AuthLayout
-      title="Create Account"
-      description="Fill in the details to create your account"
+      title={ownerData?.fullName ? `Welcome ${ownerData?.fullName?.split(" ")?.[0]}` : 'Create Account'}
+      description="Fill in the details to add account for your outlet"
     >
       {currentView === 1 ? <RestaurantForm 
         isRegister={true}
