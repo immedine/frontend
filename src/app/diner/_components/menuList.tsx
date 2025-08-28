@@ -26,6 +26,8 @@ export default function MenuList({ restaurantId }) {
   //   const cartProducts = useCartProductsStore((state) => state.cartProducts);
 
   const [menuData, setMenuData] = useState([]);
+  const [text, updateText] = useState("");
+
   const [backupMenuData, setBackupMenuData] = useState([]);
   const [categories, setCategoryData] = useState([]);
   const [backupCategories, setBackupCategoryData] = useState([]);
@@ -200,6 +202,29 @@ export default function MenuList({ restaurantId }) {
     }, 1700);
   }, []);
 
+  const search = (text: string) => {
+    if (text?.trim().length) {
+      const regex = new RegExp(`${text.trim()}`, "i");
+
+      let localMenuData = [];
+        backupMenuData.forEach(each1 => {
+          if (each1.menus?.length) {
+            const results = each1.menus?.filter(item => regex.test(item.name));
+            if (results?.length) {
+              localMenuData = localMenuData.concat(JSON.parse(JSON.stringify(results)));
+            }
+          }
+        });
+
+        toggleCategory(false);
+        setMenuData(JSON.parse(JSON.stringify(localMenuData)));
+    } else {
+      toggleCategory(true);
+      setMenuData(JSON.parse(JSON.stringify(backupMenuData)));
+    }
+    setShowSearch(false);
+  };
+
   return (
     <>
       {userData?.loading ? <SplashScreen /> :
@@ -353,7 +378,8 @@ export default function MenuList({ restaurantId }) {
 
           <div className="h-screen relative">
             {showSearch ? (
-              <SearchModal open={showSearch} onClose={() => setShowSearch(false)} />
+              <SearchModal open={showSearch} onClose={() => setShowSearch(false)} search={search} text={text}
+               updateText={updateText} />
             ) : null}
 
 

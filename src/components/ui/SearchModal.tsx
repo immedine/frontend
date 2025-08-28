@@ -1,8 +1,9 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function SearchModal({ open, onClose }) {
+export default function SearchModal({ open, onClose, search, updateText, text }) {
   if (!open) return null;
+
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-center h-screen bg-black bg-opacity-50">
@@ -16,12 +17,15 @@ export default function SearchModal({ open, onClose }) {
       <div className="absolute top-0 left-0 bg-white shadow-xl w-full max-w-md p-6 z-10">
         <input
           type="text"
+          value={text}
+          onChange={e => updateText(e.target.value)}
           placeholder="Type to search..."
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500"
         />
         <button
             type="button"
             className="bg-primary mt-6 mr-6 flex items-center px-3 py-3 text-white rounded-lg  focus:outline-none focus:ring-2 focus:ring-blue-500 absolute right-0 top-0"
+            onClick={() => search(text)}
         >
             <svg
                 className="w-4 h-4"

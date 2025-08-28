@@ -44,7 +44,7 @@ export default function ProfileEditForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: user?.personalInfo.fullName || '',
-      email: user?.personalInfo.email || '',
+      // email: user?.personalInfo.email || '',
       phoneNumber: user?.personalInfo.phone?.number || '',
     }
   });
@@ -55,7 +55,7 @@ export default function ProfileEditForm() {
     // formData.append('email', values.email);
     const res = await profileService.updateProfile({
       fullName: values.fullName,
-      email: values.email,
+      // email: values.email,
       phone: {
         number: values.phoneNumber
       }
@@ -105,21 +105,6 @@ export default function ProfileEditForm() {
                 )}
               />
               <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-             <div className="grid grid-cols-2 gap-4">
-            <FormField
               control={form.control}
               name="phoneNumber"
               render={({ field }) => (
@@ -132,6 +117,7 @@ export default function ProfileEditForm() {
                 </FormItem>
               )}
             />
+              
             </div>
             <Button type="submit">
               Save Changes

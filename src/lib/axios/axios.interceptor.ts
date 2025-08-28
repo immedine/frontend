@@ -70,7 +70,7 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers = config.headers || {};
       config.headers['Authorization'] = `Bearer ${token}`;
-      console.log('Request headers:', config.headers);
+      // console.log('Request headers:', config.headers);
     }
     return config;
   },
@@ -81,7 +81,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
     if (!response.data.success) {
-      console.log('Response data not successful:', response.data);
+      // console.log('Response data not successful:', response.data);
       handleErrorResponse(response.data);
       return Promise.resolve(response.data);
     }

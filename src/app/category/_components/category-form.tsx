@@ -21,7 +21,7 @@ import { getPathName } from '@/lib/utils';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  order: z.string().regex(/^(?:[2-9]|\d\d\d*)$/, {
+  order: z.string().regex(/^(?:[1-9]|\d\d\d*)$/, {
     message: 'Must be a number more than 1'
   })
 });
@@ -53,7 +53,7 @@ export default function CategoryForm({
 
   const fetchCategoryDetails = async () => {
     const res = await categoryService.getCategory(categoryId, getPathName(pathname));
-    if (res.data && Object.keys(res.data)) {
+    if (res && res.data && Object.keys(res.data)) {
       form.reset({
         name: res.data.name,
         order: res.data.order.toString()
